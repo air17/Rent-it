@@ -24,7 +24,9 @@
             <li>{{ advertisement.address }}</li>
         {% endif %}
         {% for pic in additional_pictures %}
-        <li><img src="{{ pic.url }}" height="200px"/></li>
+            {% if pic %}
+                <li><img src="{{ pic.url }}" height="200px"/></li>
+            {% endif %}
         {% endfor %}
     </ul>
     {% if user == advertisement.author %}

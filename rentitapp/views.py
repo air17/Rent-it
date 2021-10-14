@@ -243,7 +243,7 @@ def advertisement_create(request):
             instance = form.save(commit=False)
             instance.author = request.user
             instance.save()
-            pic = request.FILES.getlist('picture')[0]
+            pic = request.FILES.getlist('main_picture')[0]
             image = models.AdvertisementImages.objects.create(advertisement=instance, image=pic, main=True)
             image.save()
 
@@ -270,7 +270,7 @@ def registration(request):
         if form.is_valid():
             new_user = form.save()
             login(request, user=new_user)
-            return HttpResponseRedirect("/profile/" + str(new_user.id))
+            return redirect("rentitapp:account")
     else:
         form = forms.RegistrationForm()
     return render(request, "registration/registration.html", context={"form": form})

@@ -2,7 +2,7 @@
 {% block title %}Вход{% endblock %}
 {% block content %}
 
-<a href="{% url 'rentitapp:registration' %}">Зарегистрироваться</a>
+<a href="{% url 'rentitapp:index' %}">Главная</a>
 <hr>
 <h1>Вход</h1>
 
@@ -25,5 +25,6 @@
 </form>
 
 <p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
+<p><a href="{% url 'rentitapp:registration' %}">Зарегистрироваться</a></p>
 
 {% endblock %}

@@ -2,7 +2,11 @@
 
 {% block content %}
     <a href="{% url "rentitapp:create" %}">Создать объявление</a>
-    <h2>Объявления:</h2>Сортировка:
+    <h2>Объявления:</h2>
+    {% if user.is_anonymous or not user.is_premium %}
+    <p>Чтобы увидеть новые объявления, подключите <a href="{% url "rentitapp:premium" %}">премиум доступ</a></p>
+    {% endif %}
+    <p>Сортировка:
     <select onchange="location = this.value;">
         <option value="/?sort=1">По умолчанию</option>
         <option {% if sort == "price" %}selected{% endif %} value="/?sort=price">Цена по возрастанию</option>
@@ -16,7 +20,7 @@
         <option {% if category == "flat" %}selected{% endif %} value="/?category=flat">Квартиры</option>
         <option {% if category == "house" %}selected{% endif %} value="/?category=house">Дома</option>
         <option {% if category == "room" %}selected{% endif %} value="/?category=room">Комнаты</option>
-    </select>
+    </select></p>
     {% for ad in advertisement_list %}
         <ul>
             <li><img src="{{ ad.main_photo }}" height="200px" width="200px"/></li>

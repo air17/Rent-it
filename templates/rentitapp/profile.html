@@ -2,10 +2,9 @@
 
 {% block content %}
     <a href="{% url "rentitapp:index" %}">На главную</a>
-    <h2>Profile:</h2>
+    <h2>Профиль пользователя {{ user.get_full_name }}</h2>
     <img src="{{ user.get_avatar_url }}" width="150px" height="150px">
     <ul>
-        <li><b>{{ user.get_full_name }}</b></li>
         <li>{{ user.email }}</li>
         <li>Зарегистрирован: {{ user.date_joined }}</li>
         <li><i><b>{{ user.phone }}</b></i></li>

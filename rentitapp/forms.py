@@ -27,7 +27,7 @@ NewAdvertisementPictureFormset = formset_factory(form=NewAdvertisementPicture,
 EditAdvertisementPictureFormset = inlineformset_factory(parent_model=Advertisement,
                                                         model=AdvertisementImages,
                                                         form=NewAdvertisementPicture,
-                                                        extra=5, max_num=15, absolute_max=15)
+                                                        extra=1, max_num=15, absolute_max=15)
 
 
 class RegistrationForm(UserCreationForm):
