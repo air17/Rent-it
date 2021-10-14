@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="{% url "rentitapp:index" %}">На главную</a>
+    <h2>Profile:</h2>
+    <img alt="Фото профиля" src="{{ user.get_avatar_url }}" width="150px" height="150px">
+    <ul>
+        <li><b>{{ user.get_full_name }}</b></li>
+        <li>{{ user.email }}</li>
+        <li>Зарегистрирован: {{ user.date_joined }}</li>
+        <li><i><b>{{ user.phone }}</b></i></li>
+        <li>Премиум доступ:
+            {% if user.is_premium %}
+                Подключён (<a href="{% url "rentitapp:premium" %}">Продлить</a>)
+            {% else %}
+                Отключён (<a href="{% url "rentitapp:premium" %}">Подключить</a>)
+            {% endif %}</li>
+    </ul>
+
+    <a href="{% url 'password_change' %}">Изменить пароль</a>
+    <hr>
+    <a href="{% url 'logout' %}">Выйти</a>
+
+    <hr>
+    <h3>Мои объявления:</h3>
+    {% if not active_ads %}<p><i>Отсутствуют</i></p>{% endif %}
+    {% for ad in active_ads %}
+        <ul>
+            <li><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
+            <li>{{ ad.description }}</li>
+            <li><i><b>{{ ad.price }}</b></i></li>
+            <li><i>{{ ad.address }}</i></li>
+        </ul>
+        <p><a href="{% url "rentitapp:edit" ad.id %}">Редактировать</a></p>
+        <p><a href="{% url "rentitapp:advertisement" ad.id %}?deactivate=1&next=profile">Снять с публикации</a></p>
+        <br>
+    {% endfor %}
+
+    {% if deactivated_ads %}
+        <hr>
+        <h3>Снятые с публикации объявления:</h3>
+        <div style="color: gray">
+        {% for ad in deactivated_ads %}
+            <ul>
+                <li><b><a style="color: gray" href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
+                <li>{{ ad.description }}</li>
+                <li><i><b>{{ ad.price }}</b></i></li>
+                <li><i>{{ ad.address }}</i></li>
+            </ul>
+            <p><a href="{% url "rentitapp:edit" ad.id %}">Редактировать</a></p>
+            <p><a href="{% url "rentitapp:advertisement" ad.id %}?activate=1&next=profile">Опубликовать снова</a></p>
+            <p><a href="{% url "rentitapp:advertisement" ad.id %}?delete=1">Удалить объявление</a></p>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    <hr>
+    <h3>Комментарии:</h3>
+    {% if not comments %}<p><i>Отсутствуют</i></p>{% endif %}
+    {% for comment in comments %}
+        <div style="margin-left: 2%">
+        <p><b>{{ comment.author.get_full_name }}:</b></p>
+            {% if comment.advertisement %}
+            <p><i>К объявлению: {{ comment.advertisement.name }}</i></p>
+            {% endif %}
+        <p>{{ comment.text }}</p>
+        <p><i>Добавлен: {{ comment.date_published }}</i></p>
+        <hr>
+        </div>
+    {% endfor %}
+{% endblock %}

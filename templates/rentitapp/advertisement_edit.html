@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            {{ main_pic_form.as_table }}
+            {{ formset.as_table }}
+            <tr><td></td><td><input type="submit" value="Сохранить"></td></tr>
+        </table>
+    </form>
+{% endblock %}

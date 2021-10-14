@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="{% url "rentitapp:index" %}">На главную</a>
+    <h2>Profile:</h2>
+    <img src="{{ user.get_avatar_url }}" width="150px" height="150px">
+    <ul>
+        <li><b>{{ user.get_full_name }}</b></li>
+        <li>{{ user.email }}</li>
+        <li>Зарегистрирован: {{ user.date_joined }}</li>
+        <li><i><b>{{ user.phone }}</b></i></li>
+    </ul>
+
+    <hr>
+    <h3>Объявления пользователя:</h3>
+    {% if not public_ads %}<p><i>Отсутствуют</i></p>{% endif %}
+    {% for ad in public_ads %}
+        <ul>
+            <li><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
+            <li>{{ ad.description }}</li>
+            <li><i><b>{{ ad.price }}</b></i></li>
+            <li><i>{{ ad.address }}</i></li>
+        </ul>
+        <br>
+    {% endfor %}
+
+    <hr>
+    <h3>Комментарии:</h3>
+    {% if not comments %}<p><i>Отсутствуют</i></p>{% endif %}
+    {% for comment in comments %}
+        <div style="margin-left: 2%">
+        <p><b>{{ comment.author.get_full_name }}:</b></p>
+            {% if comment.advertisement %}
+            <p><i>К объявлению: {{ comment.advertisement.name }}</i></p>
+            {% endif %}
+        <p>{{ comment.text }}</p>
+        <p><i>Добавлен: {{ comment.date_published }}</i></p>
+        <hr>
+        </div>
+    {% endfor %}
+{% endblock %}

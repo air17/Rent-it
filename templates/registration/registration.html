@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+
+<a href="{% url 'rentitapp:index' %}">На главную</a>
+<hr><h1>Регистрация</h1>
+    <div style="color: red">{{ form.errors }}</div>
+<form method="post" enctype='multipart/form-data'>
+{% csrf_token %}
+{{ form.as_p }}
+<p><input type="submit" value="Зарегистрироваться"></p>
+</form>
+
+{% endblock %}

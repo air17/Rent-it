@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="{% url "rentitapp:create" %}">Создать объявление</a>
+    <h2>Объявления:</h2>Сортировка:
+    <select onchange="location = this.value;">
+        <option value="/?sort=1">По умолчанию</option>
+        <option {% if sort == "price" %}selected{% endif %} value="/?sort=price">Цена по возрастанию</option>
+        <option {% if sort == "price_d" %}selected{% endif %} value="/?sort=price&desc=1">Цена по убыванию</option>
+        <option {% if sort == "date_published_d" %}selected{% endif %} value="/?sort=date_published&desc=1">Дата публикации (сначала новые)</option>
+        <option {% if sort == "date_published" %}selected{% endif %} value="/?sort=date_published">Дата публикации (сначала старые)</option>
+    </select>
+    Тип жилья:
+    <select onchange="location = this.value;">
+        <option value="/?category=all">Все типы</option>
+        <option {% if category == "flat" %}selected{% endif %} value="/?category=flat">Квартиры</option>
+        <option {% if category == "house" %}selected{% endif %} value="/?category=house">Дома</option>
+        <option {% if category == "room" %}selected{% endif %} value="/?category=room">Комнаты</option>
+    </select>
+    {% for ad in advertisement_list %}
+        <ul>
+            <li><img src="{{ ad.main_photo }}" height="200px" width="200px"/></li>
+            <li><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
+            <li>{{ ad.description }}</li>
+            <li>Автор: <a href="{% url "rentitapp:userprofile" ad.author.id %}">{{ ad.author }}</a></li>
+            <li><i><b>{{ ad.price }}</b></i></li>
+            <li><i>{{ ad.address }}</i></li>
+            <li><i>Опубликовано: {{ ad.date_published }}</i></li>
+        </ul>
+        <br>
+    {% endfor %}
+{% endblock %}

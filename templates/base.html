@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>
+        {% block title %}{% endblock %} Rent it!
+    </title>
+</head>
+<body>
+    <div id="content" style="margin: 2% 10% 0 4%">
+        <div style="text-align: right">
+            {% if request.user.is_authenticated %}
+                <a href="{% url "rentitapp:account" %}">{{ request.user.get_full_name }}</a>
+                {% if request.user.is_superuser %}
+                    <a style="color: green; margin-left: 2%" href="/admin">Админка</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url "login" %}?next=/">Войти</a>
+            {% endif %}
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
