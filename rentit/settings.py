@@ -26,8 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rentitapp.apps.RentitappConfig',
-    'accounts.apps.AccountsConfig',
+    'rentitapp',
+    'accounts',
 ]
 
 MIDDLEWARE = [

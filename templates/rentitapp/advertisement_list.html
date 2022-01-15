@@ -4,7 +4,7 @@
     <a href="{% url "rentitapp:create" %}">Создать объявление</a>
     <h2>Объявления:</h2>
     {% if user.is_anonymous or not user.is_premium %}
-    <p>Чтобы увидеть новые объявления, подключите <a href="{% url "rentitapp:premium" %}">премиум доступ</a></p>
+    <p>Чтобы увидеть новые объявления, подключите <a href="{% url "accounts:premium" %}">премиум доступ</a></p>
     {% endif %}
     <p>Сортировка:
     <select onchange="location = this.value;">
@@ -26,7 +26,7 @@
             <li><img src="{{ ad.main_photo }}" height="200px" width="200px"/></li>
             <li><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
             <li>{{ ad.description }}</li>
-            <li>Автор: <a href="{% url "rentitapp:userprofile" ad.author.id %}">{{ ad.author }}</a></li>
+            <li>Автор: <a href="{% url "accounts:userprofile" ad.author.id %}">{{ ad.author }}</a></li>
             <li><i><b>{{ ad.price }}</b></i></li>
             <li><i>{{ ad.address }}</i></li>
             <li><i>Опубликовано: {{ ad.date_published }}</i></li>

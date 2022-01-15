@@ -11,9 +11,9 @@
         <li><i><b>{{ user.phone }}</b></i></li>
         <li>Премиум доступ:
             {% if user.is_premium %}
-                Подключён (<a href="{% url "rentitapp:premium" %}">Продлить</a>)
+                Подключён (<a href="{% url "accounts:premium" %}">Продлить</a>)
             {% else %}
-                Отключён (<a href="{% url "rentitapp:premium" %}">Подключить</a>)
+                Отключён (<a href="{% url "accounts:premium" %}">Подключить</a>)
             {% endif %}</li>
     </ul>
 

@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href="{% url 'rentitapp:account' %}">Мой профиль</a>
+    <a href="{% url 'accounts:account' %}">Мой профиль</a>
     {% if success %}
         <div style="color: white; background-color: green"><b>Оплата прошла успешно!</b></div>
     {% endif %}
     <h1>Премиум-доступ</h1>
     {% if user.is_premium %}
         У вас активирован премиум-доступ до {{ user.premium_finish_date }}
-        <p>Чтобы продлить на месяц нажмите <button onclick="location='{% url "rentitapp:payment" %}'">Оплата</button></p>
+        <p>Чтобы продлить на месяц нажмите <button onclick="location='{% url "accounts:payment" %}'">Оплата</button></p>
     {% else %}
         <p>Стоимость премиум-доступа - 250 рублей в месяц.</p>
-        <p>Чтобы оплатить нажмите <button onclick="location='{% url "rentitapp:payment" %}'">Оплата</button></p>
+        <p>Чтобы оплатить нажмите <button onclick="location='{% url "accounts:payment" %}'">Оплата</button></p>
     {% endif %}
 {% endblock %}
