@@ -1,8 +1,7 @@
 import uuid
 from datetime import timedelta
-
 import yookassa
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -72,7 +71,7 @@ class IndexView(ListView):
 
 # profile page
 class UserView(DetailView):
-    model = models.User
+    model = get_user_model()
     template_name = "rentitapp/profile.html"
 
     def get_context_data(self, **kwargs):
@@ -288,7 +287,7 @@ def premium_view(request):
 @login_required
 def payment_view(request):
     status = payment_processing(request.user)
-    if not status or status == "cancelled" or request.GET.get("cancel"):
+    if not status or status == "canceled" or request.GET.get("cancel"):
         payment = Payment.create({
             "amount": {
                 "value": "250.00",
@@ -311,10 +310,11 @@ def payment_view(request):
     elif status == "succeeded":
         return HttpResponseRedirect("/profile/premium?success=True")
     else:
+        # return HttpResponseRedirect("/profile")
         raise ValueError("Wrong payment status")
 
 
-def payment_processing(user: models.User):
+def payment_processing(user):
     Configuration.account_id = 841788
     Configuration.secret_key = "test_V47LWbfmoVL_XChQn2jNWAG_a3DKPLkiPjRO4KBmOx4"
     if user.last_payment_id:
