@@ -23,7 +23,7 @@
     </select></p>
     {% for ad in advertisement_list %}
         <ul>
-            <li><img src="{{ ad.main_photo }}" height="200px" width="200px"/></li>
+            <li><img src="{{ ad.images.objects.first.image.url }}" height="200px" width="200px"/></li>
             <li><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
             <li>{{ ad.description }}</li>
             <li>Автор: <a href="{% url "accounts:userprofile" ad.author.id %}">{{ ad.author }}</a></li>

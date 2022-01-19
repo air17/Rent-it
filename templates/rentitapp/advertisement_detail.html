@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load thumbnail %}
 
 {% block content %}
     {% if just_added %}
@@ -6,14 +7,19 @@
             <b>{{ status_text }}</b>
         </div>
     {% endif %}
-    <a href="{% url "rentitapp:index" %}">На главную</a>
 
     <h2>Объявление:</h2>
     {% if not advertisement.active %}
         <h3 style="color: red">Объявление снято с публикации</h3>
     {% endif %}
+    <p>
+    {% for obj in advertisement.images.objects.all %}
+        {% thumbnail obj.image "200x200" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+    {% endfor %}
+    </p>
     <ul>
-        <li><img src="{{ main_picture }}" height="200px"/></li>
         <li>{{ category }} <b>{{ advertisement.name }}</b></li>
         <li>{{ advertisement.description }}</li>
         <li>Опубликовано: {{ advertisement.date_published }}</li>

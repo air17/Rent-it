@@ -29,7 +29,12 @@ INSTALLED_APPS = [
     'rentitapp',
     'accounts',
     'rest_framework',
+    'sorl.thumbnail',
+    'galleryfield',
+    'crispy_forms',
 ]
+
+DJANGO_GALLERY_CONFIG = ...
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,3 +128,7 @@ MEDIA_URL = "/media/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+from django.conf.global_settings import STATICFILES_FINDERS
+
+STATICFILES_FINDERS = tuple(STATICFILES_FINDERS) + ("npm.finders.NpmFinder",)

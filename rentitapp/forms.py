@@ -1,34 +1,27 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import formset_factory, inlineformset_factory
 
-from rentitapp.models import Advertisement, AdvertisementImage
+from rentitapp.models import Advertisement
 
 
 class EditAdvertisement(forms.ModelForm):
     class Meta:
         model = Advertisement
-        fields = ("name", "category", "description", "price", "address")
+        fields = ("name", "category", "description", "price", "address", "images")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-class NewAdvertisement(EditAdvertisement):
-    main_picture = forms.ImageField(label="Основное фото")
+        self.fields["images"].required = True
+        self.fields["images"].max_number_of_images = 3
 
-
-class NewAdvertisementPicture(forms.ModelForm):
-    class Meta:
-        model = AdvertisementImage
-        fields = ("image", )
-
-
-NewAdvertisementPictureFormset = formset_factory(form=NewAdvertisementPicture,
-                                                 extra=3, max_num=15, absolute_max=15)
-
-EditAdvertisementPictureFormset = inlineformset_factory(parent_model=Advertisement,
-                                                        model=AdvertisementImage,
-                                                        form=NewAdvertisementPicture,
-                                                        extra=1, max_num=15, absolute_max=15)
+        self.helper = FormHelper(self)
+        self.helper.layout.append(
+            Submit("Submit", "Сохранить",
+                   css_class="gallery-widget-submit-button"))
 
 
 class RegistrationForm(UserCreationForm):

@@ -6,8 +6,11 @@ from rentit import settings
 
 urlpatterns = [
     path('', include('rentitapp.urls')),
-    path('', include('accounts.urls')),
+    path('profile/', include('accounts.urls')),
+    path('profile/', include('django.contrib.auth.urls')),
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
-    path('profile/', include('django.contrib.auth.urls')),
-    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path(r"images-handler/", include("galleryfield.urls")),
+    ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

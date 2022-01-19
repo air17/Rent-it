@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href="{% url "rentitapp:index" %}">На главную</a>
     <h2>Личный кабинет</h2>
     <img alt="Фото профиля" src="{{ user.get_avatar_url }}" width="150px" height="150px">
     <ul>
