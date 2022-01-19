@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import formset_factory, inlineformset_factory
 
-from rentitapp.models import Advertisement, AdvertisementImages
+from rentitapp.models import Advertisement, AdvertisementImage
 
 
 class EditAdvertisement(forms.ModelForm):
@@ -18,7 +18,7 @@ class NewAdvertisement(EditAdvertisement):
 
 class NewAdvertisementPicture(forms.ModelForm):
     class Meta:
-        model = AdvertisementImages
+        model = AdvertisementImage
         fields = ("image", )
 
 
@@ -26,7 +26,7 @@ NewAdvertisementPictureFormset = formset_factory(form=NewAdvertisementPicture,
                                                  extra=3, max_num=15, absolute_max=15)
 
 EditAdvertisementPictureFormset = inlineformset_factory(parent_model=Advertisement,
-                                                        model=AdvertisementImages,
+                                                        model=AdvertisementImage,
                                                         form=NewAdvertisementPicture,
                                                         extra=1, max_num=15, absolute_max=15)
 

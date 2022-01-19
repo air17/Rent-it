@@ -56,7 +56,7 @@ class IndexView(ListView):
 
         # adding main photo
         for ad in context["advertisement_list"]:
-            main_picture: list = models.AdvertisementImages.objects.filter(
+            main_picture: list = models.AdvertisementImage.objects.filter(
                 advertisement=ad, main=True)
             if main_picture:
                 ad.main_photo = main_picture[0].image.url
@@ -89,7 +89,7 @@ def advertisement_view(request, pk=None):
             context["status_text"] = "Объявление отредактировано"
 
     # Adding main picture
-    main_picture = models.AdvertisementImages.objects.filter(
+    main_picture = models.AdvertisementImage.objects.filter(
         advertisement=ad, main=True)
     if main_picture:
         context['main_picture'] = main_picture[0].image.url
@@ -98,7 +98,7 @@ def advertisement_view(request, pk=None):
 
     # Adding additional pictures
     additional_pictures = []
-    for adv_images in models.AdvertisementImages.objects.filter(
+    for adv_images in models.AdvertisementImage.objects.filter(
             advertisement=ad, main=False):
         additional_pictures.append(adv_images.image)
     context["additional_pictures"] = additional_pictures
@@ -146,7 +146,7 @@ def advertisement_edit(request, pk=None):
     if ad.author != request.user:
         return HttpResponseRedirect("/")
 
-    old_pictures = models.AdvertisementImages.objects.filter(advertisement=ad, main=True)
+    old_pictures = models.AdvertisementImage.objects.filter(advertisement=ad, main=True)
     old_picture = old_pictures[0] if old_pictures else None
 
     if request.method == 'POST':
@@ -170,7 +170,7 @@ def advertisement_edit(request, pk=None):
     else:
         form = forms.EditAdvertisement(instance=ad)
         formset = forms.EditAdvertisementPictureFormset(instance=ad,
-                                                        queryset=models.AdvertisementImages.objects.filter(
+                                                        queryset=models.AdvertisementImage.objects.filter(
                                                             advertisement=ad, main=False))
         img_form = forms.NewAdvertisementPicture(instance=old_picture, label_suffix=" main:")
 
@@ -189,7 +189,7 @@ def advertisement_create(request):
             instance.author = request.user
             instance.save()
             pic = request.FILES.getlist('main_picture')[0]
-            image = models.AdvertisementImages.objects.create(advertisement=instance, image=pic, main=True)
+            image = models.AdvertisementImage.objects.create(advertisement=instance, image=pic, main=True)
             image.save()
 
             for f in formset:

@@ -24,7 +24,7 @@ class Advertisement(models.Model):
         return self.category + self.name
 
 
-class AdvertisementImages(models.Model):
+class AdvertisementImage(models.Model):
     advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='ad_pics/', )
     main = models.BooleanField(default=False)

@@ -1,11 +1,11 @@
 from django.contrib import admin
 
-from rentitapp.models import Advertisement, AdvertisementImages, Comment
+from rentitapp.models import Advertisement, AdvertisementImage, Comment
 
 
 class AdAdmin(admin.ModelAdmin):
     class ImagesInline(admin.TabularInline):
-        model = AdvertisementImages
+        model = AdvertisementImage
         extra = 1
     inlines = [ImagesInline]
     list_display = ('name', 'category', 'price', 'author', 'date_published')
