@@ -1,7 +1,10 @@
 .idea
 .vscode
-**/__pycache__
+**/__pycache__/
 **/migrations
-media/ad_pics
-media/avatars
+media/images/
+media/cache/
+media/avatars/
 db.sqlite3
+node_modules
+static
