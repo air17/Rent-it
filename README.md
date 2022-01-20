@@ -4,9 +4,8 @@ A house rent advertisement board.
 
 ## Install
 
-0. Install Django: `pip install django`
-1. Run `python manage.py makemigrations rentitapp`
-2. Run `python manage.py makemigrations accounts`
+0. Install dependencies: `pip install -r requirements.txt`
+1. Run `python manage.py makemigrations rentitapp accounts`
 3. Run `python manage.py migrate`
 4. Run `npm install`
 5. Run `python manage.py collectstatic`
