@@ -8,7 +8,7 @@ urlpatterns = [
     path('', include('rentitapp.urls')),
     path('profile/', include('accounts.urls')),
     path('profile/', include('django.contrib.auth.urls')),
-    path('api/', include('api.urls')),
+    path('api/v1/', include('api.urls')),
     path('admin/', admin.site.urls),
     path(r"images-handler/", include("galleryfield.urls")),
     ]

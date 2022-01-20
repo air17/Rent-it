@@ -1,42 +1,41 @@
 from django.contrib.auth import get_user_model
-from rest_framework.fields import SerializerMethodField
-from rest_framework.relations import HyperlinkedIdentityField
-from rest_framework.serializers import ModelSerializer
+from rest_framework.fields import SerializerMethodField, URLField, JSONField
+from rest_framework.serializers import ModelSerializer, HyperlinkedRelatedField
 
-from rentitapp.models import Advertisement
+from rentitapp.models import Advertisement, Comment
 
 
 class UserSerializer(ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ("id", "email", "password", "first_name", "last_name", "is_superuser")
-        extra_kwargs = {"password": {"write_only": True}}
-
-    def create(self, validated_data: dict):
-        user = self.Meta.model(**validated_data)
-        user.save()
-        return user
-
-    def update(self, instance, validated_data: dict):
-        instance.set_password(validated_data.pop("password", ""))
-        return super().update(instance, validated_data)
+        fields = ("picture", "first_name", "last_name", "email", "phone", )
 
 
-class AdvertisementSerializer(ModelSerializer):
+class CommentSerializer(ModelSerializer):
     author = SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ("author", "text", "date_published", )
 
     def get_author(self, obj):
         if obj.author:
-            return obj.author.email
+            return obj.author.get_full_name()
+
+
+class ReadAdvertisementSerializer(ModelSerializer):
+    author = HyperlinkedRelatedField(view_name='user', read_only=True)
+    images = JSONField(read_only=True)
+    comments = JSONField(read_only=True)
 
     class Meta:
         model = Advertisement
-        fields = ("id", "name", "description", "author", "price", "address", "category", "url")
+        exclude = ("active",)
 
 
 class ThinAdvertisementSerializer(ModelSerializer):
-    url = HyperlinkedIdentityField(view_name="advertisement-detail")
+    main_photo = URLField(read_only=True)
 
     class Meta:
         model = Advertisement
-        fields = ("name", "price", "address", "category", "url")
+        fields = ("name", "price", "address", "category", "url", "main_photo")

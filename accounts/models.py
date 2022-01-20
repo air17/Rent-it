@@ -49,7 +49,7 @@ class User(AbstractUser):
         unique=True,
     )
     picture = models.ImageField(blank=True, upload_to="avatars/")
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20, unique=True)
 
     is_premium = models.BooleanField(default=False, help_text="Доступен ли пользователю премиум-функционал")
     premium_start_date = models.DateTimeField(null=True)
