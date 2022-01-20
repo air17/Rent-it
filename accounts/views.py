@@ -71,7 +71,7 @@ def registration(request):
         if form.is_valid():
             new_user = form.save()
             login(request, user=new_user)
-            return redirect("rentitapp:account")
+            return redirect("accounts:account")
     else:
         form = forms.RegistrationForm()
     return render(request, "registration/registration.html", context={"form": form})

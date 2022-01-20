@@ -4,8 +4,9 @@ A house rent advertisement board.
 
 ## Install
 
-0. Install dependencies: `pip install -r requirements.txt`
-1. Run `python manage.py makemigrations rentitapp accounts`
+0. Install `python3` and `npm`
+1. Install dependencies: `pip install -r requirements.txt`
+2. Run `python manage.py makemigrations rentitapp accounts`
 3. Run `python manage.py migrate`
 4. Run `npm install`
 5. Run `python manage.py collectstatic`
