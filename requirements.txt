@@ -1,0 +1,5 @@
+Django==4.0.1
+django-crispy-forms==1.13.0
+django-npm==1.0.0
+djangorestframework==3.13.1
+yookassa==2.2.3
