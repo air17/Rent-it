@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class RentitappConfig(AppConfig):
+class AccountsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'rentitapp'
+    name = 'apps.accounts'

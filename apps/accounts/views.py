@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.views.generic import DetailView
 from yookassa import Payment, Configuration
 
-from rentitapp import models, forms
+from apps.rentitapp import models, forms
 
 
 # profile page

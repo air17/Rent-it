@@ -1,36 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href="{% url "rentitapp:create" %}">Создать объявление</a>
-    <h2>Объявления:</h2>
-    {% if user.is_anonymous or not user.is_premium %}
-    <p>Чтобы увидеть новые объявления, подключите <a href="{% url "accounts:premium" %}">премиум доступ</a></p>
-    {% endif %}
-    <p>Сортировка:
-    <select onchange="location = this.value;">
-        <option value="/?sort=1">По умолчанию</option>
-        <option {% if sort == "price" %}selected{% endif %} value="/?sort=price">Цена по возрастанию</option>
-        <option {% if sort == "price_d" %}selected{% endif %} value="/?sort=price&desc=1">Цена по убыванию</option>
-        <option {% if sort == "date_published_d" %}selected{% endif %} value="/?sort=date_published&desc=1">Дата публикации (сначала новые)</option>
-        <option {% if sort == "date_published" %}selected{% endif %} value="/?sort=date_published">Дата публикации (сначала старые)</option>
-    </select>
-    Тип жилья:
-    <select onchange="location = this.value;">
-        <option value="/?category=all">Все типы</option>
-        <option {% if category == "flat" %}selected{% endif %} value="/?category=flat">Квартиры</option>
-        <option {% if category == "house" %}selected{% endif %} value="/?category=house">Дома</option>
-        <option {% if category == "room" %}selected{% endif %} value="/?category=room">Комнаты</option>
-    </select></p>
-    {% for ad in advertisement_list %}
-        <ul>
-            <li><img src="{{ ad.images.objects.first.image.url }}" height="200px" width="200px"/></li>
-            <li><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
-            <li>{{ ad.description }}</li>
-            <li>Автор: <a href="{% url "accounts:userprofile" ad.author.id %}">{{ ad.author }}</a></li>
-            <li><i><b>{{ ad.price }}</b></i></li>
-            <li><i>{{ ad.address }}</i></li>
-            <li><i>Опубликовано: {{ ad.date_published }}</i></li>
-        </ul>
-        <br>
-    {% endfor %}
+    <div class="article-list">
+        <div class="container">
+            <div class="intro">
+                <h2 class="text-center">Объявления</h2>
+                <p class="text-center">
+                    {% if user.is_anonymous or not user.is_premium %}
+                    Чтобы увидеть объявления за последние 24 часа, подключите <a href="{% url "accounts:premium" %}">премиум доступ</a>
+                    {% endif %}
+                </p>
+                <p class="text-right">
+                    Сортировка:
+                    <select onchange="location = this.value;">
+                        <option value="/?sort=1">По умолчанию</option>
+                        <option {% if sort == "price" %}selected{% endif %} value="/?sort=price">Цена по возрастанию</option>
+                        <option {% if sort == "price_d" %}selected{% endif %} value="/?sort=price&desc=1">Цена по убыванию</option>
+                        <option {% if sort == "date_published_d" %}selected{% endif %} value="/?sort=date_published&desc=1">Дата публикации (сначала новые)</option>
+                        <option {% if sort == "date_published" %}selected{% endif %} value="/?sort=date_published">Дата публикации (сначала старые)</option>
+                    </select>
+                    Тип жилья:
+                    <select onchange="location = this.value;">
+                        <option value="/?category=all">Все типы</option>
+                        <option {% if category == "flat" %}selected{% endif %} value="/?category=flat">Квартиры</option>
+                        <option {% if category == "house" %}selected{% endif %} value="/?category=house">Дома</option>
+                        <option {% if category == "room" %}selected{% endif %} value="/?category=room">Комнаты</option>
+                    </select>
+                </p>
+            </div>
+            <div class="row articles">
+                {% for ad in advertisement_list %}
+                <div class="col-sm-6 col-md-4 item">
+                    <a href="{% url "rentitapp:advertisement" ad.id %}">
+                        <img class="img-fluid" style="height: " src="{{ ad.picture.url }}">
+                    </a>
+                    <h3 class="name">{{ ad.name }}</h3>
+                    <p class="description">{{ ad.description }}</p>
+                    <h4>{{ ad.price }}</h4>
+                    <p>Адрес: <i>{{ ad.address }}</i></p>
+                    <i>Опубликовано: {{ ad.date_published }}</i>
+                    <a class="action" href="{% url "rentitapp:advertisement" ad.id %}"><i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+                {% endfor %}
+                {% if not advertisement_list %}
+                    <div class="col-sm-6 col-md-4 item">
+                    <h3 class="name">Нет объявлений</h3>
+                    <p class="description">Ваше будет первым!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

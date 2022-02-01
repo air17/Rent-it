@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from rentitapp.models import Advertisement, Comment
+from .models import Advertisement, Comment
 
 
 class AdAdmin(admin.ModelAdmin):

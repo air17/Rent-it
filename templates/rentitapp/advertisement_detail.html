@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-{% load thumbnail %}
 
 {% block content %}
     {% if just_added %}
-        <div style="background-color: green; color: white; width: 100%; text-align: center">
+        <div class="bg-success" style="color: white; width: 100%; text-align: center">
             <b>{{ status_text }}</b>
         </div>
     {% endif %}
@@ -12,28 +11,19 @@
     {% if not advertisement.active %}
         <h3 style="color: red">Объявление снято с публикации</h3>
     {% endif %}
-    <p>
-    {% for obj in advertisement.images.objects.all %}
-        {% thumbnail obj.image "200x200" crop="center" as im %}
-            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-        {% endthumbnail %}
-    {% endfor %}
-    </p>
     <ul>
         <li>{{ category }} <b>{{ advertisement.name }}</b></li>
+        <li><img src="{{ advertisement.picture.url }}" height="200px"/></li>
         <li>{{ advertisement.description }}</li>
         <li>Опубликовано: {{ advertisement.date_published }}</li>
         <li><i><b>{{ advertisement.price }}</b></i></li>
         <li><i>{{ advertisement.author.get_full_name }}</i></li>
-        <li><i>{{ advertisement.author.phone }}</i></li>
+        {% if advertisement.author.phone %}
+            <li><i>{{ advertisement.author.phone }}</i></li>
+        {% endif %}
         {% if advertisement.address %}
             <li>{{ advertisement.address }}</li>
         {% endif %}
-        {% for pic in additional_pictures %}
-            {% if pic %}
-                <li><img src="{{ pic.url }}" height="200px"/></li>
-            {% endif %}
-        {% endfor %}
     </ul>
     {% if user == advertisement.author %}
         <a href="{% url "rentitapp:edit" advertisement.id %}">Редактировать</a>

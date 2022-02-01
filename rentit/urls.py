@@ -5,12 +5,13 @@ from django.urls import path, include
 from rentit import settings
 
 urlpatterns = [
-    path('', include('rentitapp.urls')),
-    path('profile/', include('accounts.urls')),
+    path('', include('apps.rentitapp.urls')),
+    path('profile/', include('apps.accounts.urls')),
     path('profile/', include('django.contrib.auth.urls')),
-    path('api/v1/', include('api.urls')),
+    path('api/v1/', include('apps.api.urls')),
     path('admin/', admin.site.urls),
     path(r"images-handler/", include("galleryfield.urls")),
     ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

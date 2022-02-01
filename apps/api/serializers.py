@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.fields import SerializerMethodField, URLField, JSONField
 from rest_framework.serializers import ModelSerializer, HyperlinkedRelatedField
 
-from rentitapp.models import Advertisement, Comment
+from apps.rentitapp.models import Advertisement, Comment
 
 
 class UserSerializer(ModelSerializer):
@@ -25,7 +25,6 @@ class CommentSerializer(ModelSerializer):
 
 class ReadAdvertisementSerializer(ModelSerializer):
     author = HyperlinkedRelatedField(view_name='user', read_only=True)
-    images = JSONField(read_only=True)
     comments = JSONField(read_only=True)
 
     class Meta:
@@ -34,8 +33,6 @@ class ReadAdvertisementSerializer(ModelSerializer):
 
 
 class ThinAdvertisementSerializer(ModelSerializer):
-    main_photo = URLField(read_only=True)
-
     class Meta:
         model = Advertisement
-        fields = ("name", "price", "address", "category", "url", "main_photo")
+        fields = ("name", "price", "address", "category", "url", "picture")

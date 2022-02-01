@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.views.generic import ListView
 
-from rentitapp import models, forms
+from . import models, forms
 
 
 # main page
@@ -44,15 +44,14 @@ class IndexView(ListView):
         context["advertisement_list"] = list(context["advertisement_list"])
 
         # removing non-active ads
-        for ad in context["advertisement_list"]:
-            if not ad.active:
-                context["advertisement_list"].remove(ad)
+        context["advertisement_list"] = list(filter(lambda ad: ad.active,
+                                                    context["advertisement_list"]))
 
         # removing new ads for non-premium
         if self.request.user.is_anonymous or not self.request.user.is_premium:
-            for ad in context["advertisement_list"]:
-                if ad.date_published > timezone.now() - timedelta(days=1):
-                    context["advertisement_list"].remove(ad)
+            context["advertisement_list"] = list(filter(lambda ad:
+                                                        ad.date_published < timezone.now() - timedelta(days=1),
+                                                        context["advertisement_list"]))
 
         return context
 
@@ -145,6 +144,8 @@ def advertisement_create(request):
             instance.save()
 
             return HttpResponseRedirect(f"detail/{instance.id}?success=1")
+        else:
+            print(form.errors)
 
     else:
         form = forms.EditAdvertisement()
