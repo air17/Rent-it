@@ -2,9 +2,7 @@
 .vscode
 **/__pycache__/
 **/migrations
-media/images/
-media/cache/
-media/avatars/
+media
 db.sqlite3
 node_modules
 static
