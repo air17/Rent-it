@@ -60,6 +60,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = MyUserManager()
+    backend = 'django.contrib.auth.backends.ModelBackend'
 
     def __str__(self):
         return self.get_full_name()

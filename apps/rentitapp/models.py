@@ -48,9 +48,7 @@ class Comment(models.Model):
     advertisement = models.ForeignKey(Advertisement,
                                       on_delete=models.DO_NOTHING,
                                       )
-    text = models.TextField(blank=False,
-                            null=False,
-                            )
+    text = models.TextField()
     date_published = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
