@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser, UserManager
 
 from rentit import settings
+from utils.random_filename import RandomFileName
 
 
 class MyUserManager(UserManager):
@@ -41,33 +42,38 @@ class MyUserManager(UserManager):
 
 class User(AbstractUser):
     username = None
-    first_name = models.CharField(max_length=150, blank=False)
-    last_name = models.CharField(max_length=150, blank=False)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
         unique=True,
     )
-    picture = models.ImageField(blank=True, upload_to="avatars/")
-    phone = models.CharField(max_length=20, unique=True)
-
-    is_premium = models.BooleanField(default=False, help_text="Доступен ли пользователю премиум-функционал")
+    picture = models.ImageField(
+        verbose_name="user avatar",
+        blank=True,
+        default=settings.MEDIA_URL + "user.png",
+        upload_to=RandomFileName("avatars"),
+    )
+    phone = models.CharField(
+        verbose_name="phone number",
+        max_length=20,
+        unique=True,
+    )
+    is_premium = models.BooleanField(
+        default=False,
+        help_text="Доступен ли пользователю премиум-функционал",
+    )
+    # TODO: Move premium and payments info into a new model
     premium_start_date = models.DateTimeField(null=True)
     premium_finish_date = models.DateTimeField(null=True)
     last_payment_id = models.CharField(max_length=100, null=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    REQUIRED_FIELDS = ("first_name", "last_name")
 
     objects = MyUserManager()
     backend = 'django.contrib.auth.backends.ModelBackend'
 
     def __str__(self):
         return self.get_full_name()
-
-    def get_avatar_url(self) -> str:
-        if self.picture:
-            url = self.picture.url
-        else:
-            url = settings.MEDIA_URL+"user.png"
-        return url

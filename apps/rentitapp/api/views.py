@@ -16,12 +16,15 @@ class AdvertisementViewSet(ModelViewSet):
         if request.user and not (request.user.is_superuser or request.user.is_premium):
             day_ago = datetime.now() - timedelta(days=1)
             self.queryset = Advertisement.objects.filter(date_published__lte=day_ago)
+
         self.serializer_class = ThinAdvertisementSerializer
+
         return super().list(request, *args, **kwargs)
 
     def get_permissions(self):
         if self.action == 'update':
             self.permission_classes += (IsAuthor, )
+
         return super().get_permissions()
 
     def perform_create(self, serializer):

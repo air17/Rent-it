@@ -2,10 +2,10 @@
 Django settings for server project.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/3.2/topics/settings/
+https://docs.djangoproject.com/en/4.0/topics/settings/
 
 For the full list of settings and their config, see
-https://docs.djangoproject.com/en/3.2/ref/settings/
+https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from typing import Tuple
@@ -13,7 +13,7 @@ from typing import Tuple
 from rentit.settings.components import BASE_DIR, config
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
@@ -74,7 +74,7 @@ WSGI_APPLICATION = 'rentit.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -94,7 +94,7 @@ DATABASES = {
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
+# https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'ru-ru'
 
@@ -106,7 +106,7 @@ TIME_ZONE = 'Europe/Moscow'
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
 
@@ -141,27 +141,27 @@ TEMPLATES = [{
 # Media files
 # Media root dir is commonly changed in production
 # (see development.py and production.py).
-# https://docs.djangoproject.com/en/3.2/topics/files/
+# https://docs.djangoproject.com/en/4.0/topics/files/
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
 
 
 # Django authentication system
-# https://docs.djangoproject.com/en/3.2/topics/auth/
+# https://docs.djangoproject.com/en/4.0/topics/auth/
 
 AUTHENTICATION_BACKENDS = (
     'axes.backends.AxesBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-PASSWORD_HASHERS = [
+PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     'django.contrib.auth.hashers.BCryptPasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.Argon2PasswordHasher',
-]
+)
 
 AUTH_USER_MODEL = 'accounts.User'
 LOGOUT_REDIRECT_URL = "/"
@@ -169,7 +169,7 @@ LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/profile/login"
 
 # Security
-# https://docs.djangoproject.com/en/3.2/topics/security/
+# https://docs.djangoproject.com/en/4.0/topics/security/
 
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
@@ -184,5 +184,5 @@ REFERRER_POLICY = 'same-origin'
 
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

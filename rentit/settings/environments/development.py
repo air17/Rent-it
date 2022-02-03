@@ -52,7 +52,7 @@ INSTALLED_APPS += (
 
 
 # Static files:
-# https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-STATICFILES_DIRS
+# https://docs.djangoproject.com/en/4.0/ref/settings/#std:setting-STATICFILES_DIRS
 
 STATICFILES_DIRS: List[str] = []
 
@@ -140,5 +140,5 @@ EXTRA_CHECKS = {
 }
 
 # Disable persistent DB connections
-# https://docs.djangoproject.com/en/3.2/ref/databases/#caveats
+# https://docs.djangoproject.com/en/4.0/ref/databases/#caveats
 DATABASES['default']['CONN_MAX_AGE'] = 0

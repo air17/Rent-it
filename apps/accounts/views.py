@@ -27,7 +27,9 @@ class UserView(DetailView):
         # Adding active ads
         # Making a list to be able to remove items
         public_ads = list(
-            models.Advertisement.objects.filter(author=self.object, active=True))
+            models.Advertisement.objects.filter(author=self.object,
+                                                active=True)
+        )
 
         # Removing new ads for non-premium users
         if self.request.user.is_anonymous or not self.request.user.is_premium:

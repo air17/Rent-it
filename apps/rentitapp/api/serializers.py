@@ -1,4 +1,4 @@
-from rest_framework.fields import SerializerMethodField, JSONField
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer, HyperlinkedRelatedField
 
 from apps.rentitapp.models import Advertisement, Comment
@@ -9,7 +9,7 @@ class CommentSerializer(ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ("author", "text", "date_published", )
+        fields = ("author", "text", "date_published",)
 
     def get_author(self, obj):
         if obj.author:
@@ -27,4 +27,10 @@ class AdvertisementSerializer(ModelSerializer):
 class ThinAdvertisementSerializer(ModelSerializer):
     class Meta:
         model = Advertisement
-        fields = ("picture", "category", "name", "price", "address", "url")
+        fields = ("picture",
+                  "category",
+                  "name",
+                  "price",
+                  "address",
+                  "url",
+                  )

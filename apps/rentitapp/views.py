@@ -40,25 +40,24 @@ class IndexView(ListView):
                 context["advertisement_list"] = context["advertisement_list"].filter(
                     category=models.Advertisement.FlatCategory.ROOM)
 
-        # making a list to be able to remove items
-        context["advertisement_list"] = list(context["advertisement_list"])
-
         # removing non-active ads
         context["advertisement_list"] = list(filter(lambda ad: ad.active,
                                                     context["advertisement_list"]))
 
         # removing new ads for non-premium
         if self.request.user.is_anonymous or not self.request.user.is_premium:
-            context["advertisement_list"] = list(filter(lambda ad:
-                                                        ad.date_published < timezone.now() - timedelta(days=1),
-                                                        context["advertisement_list"]))
+            context["advertisement_list"] = list(
+                filter(lambda ad: ad.date_published < timezone.now() - timedelta(days=1),
+                       context["advertisement_list"]
+                       )
+            )
 
         return context
 
 
 # advertisement details page
 def advertisement_view(request, pk=None):
-    ad = models.Advertisement.objects.get(pk=pk)
+    ad = get_object_or_404(models.Advertisement, pk=pk)
 
     # Redirect if ad is new and user is not premium
     if request.user != ad.author and \
@@ -87,10 +86,12 @@ def advertisement_view(request, pk=None):
         # TODO: Allow only one comment per user
         form = forms.NewComment(request.GET)
         if form.is_valid():
-            models.Comment.objects.create(author=request.user,
-                                          profile=ad.author,
-                                          advertisement=ad,
-                                          text=form.cleaned_data["comment"])
+            models.Comment.objects.create(
+                author=request.user,
+                profile=ad.author,
+                advertisement=ad,
+                text=form.cleaned_data["comment"],
+            )
             context["comment_added"] = True
 
     # Processing deactivation
