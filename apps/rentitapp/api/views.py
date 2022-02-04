@@ -10,9 +10,7 @@ from apps.rentitapp.models import Advertisement
 class AdvertisementViewSet(ModelViewSet):
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementSerializer
-    permission_classes = [
-        IsAuthenticated,
-    ]
+    permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
         if request.user and not (request.user.is_superuser or request.user.is_premium):

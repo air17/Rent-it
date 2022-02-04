@@ -1,15 +1,14 @@
-import uuid
 from datetime import timedelta
-import yookassa
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.generic import DetailView
-from yookassa import Payment, Configuration
 
+from apps.accounts.utils import payment_processing, create_payment
 from apps.rentitapp import models, forms
+from rentit.settings.components import config
 
 
 # profile page
@@ -87,14 +86,10 @@ def premium_view(request):
 def payment_view(request):
     status = payment_processing(request.user)
     if not status or status == "canceled" or request.GET.get("cancel"):
-        payment = Payment.create(
-            {
-                "amount": {"value": "250.00", "currency": "RUB"},
-                "confirmation": {"type": "redirect", "return_url": "http://127.0.0.1:8000/profile/premium/payment"},
-                "capture": True,
-                "description": "Покупка премиум-доступа на месяц для " + request.user.get_full_name(),
-            },
-            uuid.uuid4(),
+        payment = create_payment(
+            "250",
+            f"http://{config('DOMAIN_NAME')}/profile/premium/payment",
+            "Покупка премиум-доступа на месяц для " + request.user.get_full_name(),
         )
 
         request.user.last_payment_id = payment.id
@@ -106,25 +101,4 @@ def payment_view(request):
     elif status == "succeeded":
         return HttpResponseRedirect("/profile/premium?success=True")
     else:
-        # return HttpResponseRedirect("/profile")
-        raise ValueError("Wrong payment status")
-
-
-def payment_processing(user):
-    Configuration.account_id = 841788
-    Configuration.secret_key = "test_V47LWbfmoVL_XChQn2jNWAG_a3DKPLkiPjRO4KBmOx4"
-    if user.last_payment_id:
-        payment = yookassa.Payment.find_one(user.last_payment_id)
-        if payment.status == "succeeded":
-            user.last_payment_id = None
-            user.is_premium = True
-            if user.premium_finish_date and user.premium_finish_date > timezone.now():
-                user.premium_finish_date += timedelta(days=30)
-            else:
-                user.premium_finish_date = timezone.now() + timedelta(days=30)
-            user.save()
-        elif payment.status == "cancelled":
-            user.last_payment_id = None
-            user.save()
-
-        return payment.status
+        return HttpResponseRedirect("/profile")

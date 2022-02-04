@@ -11,7 +11,7 @@ class AdAdmin(admin.ModelAdmin):
         "author",
         "date_published",
     )
-    list_filter = "date_published"
+    list_filter = ("date_published",)
     search_fields = ("name", "description")
 
 
