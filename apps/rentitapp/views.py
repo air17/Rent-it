@@ -32,24 +32,26 @@ class IndexView(ListView):
             context["category"] = category
             if category == "flat":
                 context["advertisement_list"] = context["advertisement_list"].filter(
-                    category=models.Advertisement.FlatCategory.FLAT)
+                    category=models.Advertisement.FlatCategory.FLAT
+                )
             elif category == "house":
                 context["advertisement_list"] = context["advertisement_list"].filter(
-                    category=models.Advertisement.FlatCategory.HOUSE)
+                    category=models.Advertisement.FlatCategory.HOUSE
+                )
             elif category == "room":
                 context["advertisement_list"] = context["advertisement_list"].filter(
-                    category=models.Advertisement.FlatCategory.ROOM)
+                    category=models.Advertisement.FlatCategory.ROOM
+                )
 
         # removing non-active ads
-        context["advertisement_list"] = list(filter(lambda ad: ad.active,
-                                                    context["advertisement_list"]))
+        context["advertisement_list"] = list(filter(lambda ad: ad.active, context["advertisement_list"]))
 
         # removing new ads for non-premium
         if self.request.user.is_anonymous or not self.request.user.is_premium:
             context["advertisement_list"] = list(
-                filter(lambda ad: ad.date_published < timezone.now() - timedelta(days=1),
-                       context["advertisement_list"]
-                       )
+                filter(
+                    lambda ad: ad.date_published < timezone.now() - timedelta(days=1), context["advertisement_list"]
+                )
             )
 
         return context
@@ -60,16 +62,20 @@ def advertisement_view(request, pk=None):
     ad = get_object_or_404(models.Advertisement, pk=pk)
 
     # Redirect if ad is new and user is not premium
-    if request.user != ad.author and \
-            (request.user.is_anonymous or not request.user.is_premium) and \
-            ad.date_published > timezone.now() - timedelta(days=1):
+    if (
+        request.user != ad.author
+        and (request.user.is_anonymous or not request.user.is_premium)
+        and ad.date_published > timezone.now() - timedelta(days=1)
+    ):
         return HttpResponseRedirect("/")
 
     # Setting context, adding category label, adding default variables
-    context = {"advertisement": ad,
-               "category": ad.FlatCategory(ad.category).label,
-               "just_added": False,
-               "comment_added": False}
+    context = {
+        "advertisement": ad,
+        "category": ad.FlatCategory(ad.category).label,
+        "just_added": False,
+        "comment_added": False,
+    }
 
     # Showing notification when added or edited
     if request.GET.get("success") or request.GET.get("edited"):
@@ -123,21 +129,26 @@ def advertisement_edit(request, pk=None):
     if ad.author != request.user:
         return HttpResponseRedirect("/")
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.EditAdvertisement(request.POST, request.FILES, instance=ad)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(f"/detail/{ad.id}?edited=1")
     else:
         form = forms.EditAdvertisement(instance=ad)
-        return render(request, "rentitapp/advertisement_edit.html",
-                      {'form': form, })
+        return render(
+            request,
+            "rentitapp/advertisement_edit.html",
+            {
+                "form": form,
+            },
+        )
 
 
 # create ad page
 @login_required(login_url="/profile/login")
 def advertisement_create(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.EditAdvertisement(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
@@ -151,4 +162,10 @@ def advertisement_create(request):
     else:
         form = forms.EditAdvertisement()
 
-    return render(request, "rentitapp/advertisement_edit.html", {'form': form, })
+    return render(
+        request,
+        "rentitapp/advertisement_edit.html",
+        {
+            "form": form,
+        },
+    )

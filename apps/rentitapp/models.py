@@ -17,10 +17,7 @@ class Advertisement(models.Model):
     )
     name = models.CharField(max_length=100)
     description = models.TextField()
-    author = models.ForeignKey(
-        to=get_user_model(),
-        on_delete=models.CASCADE
-    )
+    author = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     date_published = models.DateTimeField(default=timezone.now)
     price = models.PositiveIntegerField()
     address = models.CharField(
@@ -41,25 +38,28 @@ class Advertisement(models.Model):
         constraints = [
             models.CheckConstraint(
                 name="%(app_label)s_%(class)s_category_valid",
-                check=models.Q(category__in=("", "ROOM", "FLAT", "HOUSE"))
+                check=models.Q(category__in=("", "ROOM", "FLAT", "HOUSE")),
             ),
         ]
 
 
 class Comment(models.Model):
     # comment author
-    author = models.ForeignKey(get_user_model(),
-                               on_delete=models.CASCADE,
-                               related_name="comment_author",
-                               )
+    author = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        related_name="comment_author",
+    )
     # advertisement author
-    profile = models.ForeignKey(get_user_model(),
-                                on_delete=models.CASCADE,
-                                related_name="comment_for",
-                                )
-    advertisement = models.ForeignKey(Advertisement,
-                                      on_delete=models.DO_NOTHING,
-                                      )
+    profile = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        related_name="comment_for",
+    )
+    advertisement = models.ForeignKey(
+        Advertisement,
+        on_delete=models.DO_NOTHING,
+    )
     text = models.TextField()
     date_published = models.DateTimeField(default=timezone.now)
 

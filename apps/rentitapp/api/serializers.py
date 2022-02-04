@@ -9,7 +9,11 @@ class CommentSerializer(ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ("author", "text", "date_published",)
+        fields = (
+            "author",
+            "text",
+            "date_published",
+        )
 
     def get_author(self, obj):
         if obj.author:
@@ -17,7 +21,7 @@ class CommentSerializer(ModelSerializer):
 
 
 class AdvertisementSerializer(ModelSerializer):
-    author = HyperlinkedRelatedField(view_name='user-detail', read_only=True)
+    author = HyperlinkedRelatedField(view_name="user-detail", read_only=True)
 
     class Meta:
         model = Advertisement
@@ -27,10 +31,11 @@ class AdvertisementSerializer(ModelSerializer):
 class ThinAdvertisementSerializer(ModelSerializer):
     class Meta:
         model = Advertisement
-        fields = ("picture",
-                  "category",
-                  "name",
-                  "price",
-                  "address",
-                  "url",
-                  )
+        fields = (
+            "picture",
+            "category",
+            "name",
+            "price",
+            "address",
+            "url",
+        )

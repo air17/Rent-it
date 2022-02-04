@@ -26,10 +26,7 @@ class UserView(DetailView):
 
         # Adding active ads
         # Making a list to be able to remove items
-        public_ads = list(
-            models.Advertisement.objects.filter(author=self.object,
-                                                active=True)
-        )
+        public_ads = list(models.Advertisement.objects.filter(author=self.object, active=True))
 
         # Removing new ads for non-premium users
         if self.request.user.is_anonymous or not self.request.user.is_premium:
@@ -56,10 +53,8 @@ def account_view(request):
     context["comments"] = comments
 
     # Adding own ads
-    context["active_ads"] = models.Advertisement.objects.filter(
-        author=user, active=True)
-    context["deactivated_ads"] = models.Advertisement.objects.filter(
-        author=user, active=False)
+    context["active_ads"] = models.Advertisement.objects.filter(author=user, active=True)
+    context["deactivated_ads"] = models.Advertisement.objects.filter(author=user, active=False)
 
     return render(request, template_name, context)
 
@@ -68,7 +63,7 @@ def account_view(request):
 def registration(request):
     if not request.user.is_anonymous:
         return HttpResponseRedirect("/")
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             new_user = form.save()
@@ -92,18 +87,15 @@ def premium_view(request):
 def payment_view(request):
     status = payment_processing(request.user)
     if not status or status == "canceled" or request.GET.get("cancel"):
-        payment = Payment.create({
-            "amount": {
-                "value": "250.00",
-                "currency": "RUB"
+        payment = Payment.create(
+            {
+                "amount": {"value": "250.00", "currency": "RUB"},
+                "confirmation": {"type": "redirect", "return_url": "http://127.0.0.1:8000/profile/premium/payment"},
+                "capture": True,
+                "description": "Покупка премиум-доступа на месяц для " + request.user.get_full_name(),
             },
-            "confirmation": {
-                "type": "redirect",
-                "return_url": "http://127.0.0.1:8000/profile/premium/payment"
-            },
-            "capture": True,
-            "description": "Покупка премиум-доступа на месяц для "+request.user.get_full_name()
-        }, uuid.uuid4())
+            uuid.uuid4(),
+        )
 
         request.user.last_payment_id = payment.id
         request.user.save()

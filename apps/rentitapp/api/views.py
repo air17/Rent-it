@@ -10,7 +10,9 @@ from apps.rentitapp.models import Advertisement
 class AdvertisementViewSet(ModelViewSet):
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementSerializer
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [
+        IsAuthenticated,
+    ]
 
     def list(self, request, *args, **kwargs):
         if request.user and not (request.user.is_superuser or request.user.is_premium):
@@ -22,8 +24,8 @@ class AdvertisementViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
     def get_permissions(self):
-        if self.action == 'update':
-            self.permission_classes += (IsAuthor, )
+        if self.action == "update":
+            self.permission_classes += (IsAuthor,)
 
         return super().get_permissions()
 
