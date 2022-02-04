@@ -1,6 +1,6 @@
 Django==4.0.2
 djangorestframework==3.13.1
-python-decouple==3.5
+python-decouple==3.6
 uuid==1.30
 django-axes==5.31.0
 django-health-check==3.16.5
@@ -15,3 +15,6 @@ django_test_migrations==1.2
 django-extra-checks==0.11
 bcrypt==3.2
 yookassa==2.2.3
+flake8
+black
+pre-commit
