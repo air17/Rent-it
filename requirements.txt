@@ -15,6 +15,7 @@ django_test_migrations==1.2
 django-extra-checks==0.11
 bcrypt==3.2
 yookassa==2.2.3
-flake8
-black
-pre-commit
+flake8==4.0.1
+black==22.1.0
+pre-commit==2.17
+django-model-utils==4.2.0

@@ -1,10 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
+from model_utils.models import UUIDModel
+
 from utils.random_filename import RandomFileName
 
 
-class Advertisement(models.Model):
+class Advertisement(UUIDModel):
     class FlatCategory(models.TextChoices):
         _ = "", "Accommodation type"  # placeholder
         ROOM = "ROOM", "Room"
