@@ -6,9 +6,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.generic import DetailView
 
-from apps.accounts.utils import payment_processing, create_payment
 from apps.rentitapp import models, forms
-from rentit.settings.components import config
 
 
 # profile page
@@ -24,7 +22,6 @@ class UserView(DetailView):
         context["comments"] = comments
 
         # Adding active ads
-        # Making a list to be able to remove items
         public_ads = list(models.Advertisement.objects.filter(author=self.object, active=True))
 
         # Removing new ads for non-premium users
@@ -71,34 +68,3 @@ def registration(request):
     else:
         form = forms.RegistrationForm()
     return render(request, "registration/registration.html", context={"form": form})
-
-
-@login_required
-def premium_view(request):
-    context = {"success": False}
-    if request.GET.get("success"):
-        context = {"success": True}
-    payment_processing(request.user)
-    return render(request, "accounts/premium_page.html", context)
-
-
-@login_required
-def payment_view(request):
-    status = payment_processing(request.user)
-    if not status or status == "canceled" or request.GET.get("cancel"):
-        payment = create_payment(
-            "250",
-            f"http://{config('DOMAIN_NAME')}/profile/premium/payment",
-            "Покупка премиум-доступа на месяц для " + request.user.get_full_name(),
-        )
-
-        request.user.last_payment_id = payment.id
-        request.user.save()
-
-        return HttpResponseRedirect(payment.confirmation.confirmation_url)
-    elif status == "pending":
-        return render(request, "accounts/payment_page.html")
-    elif status == "succeeded":
-        return HttpResponseRedirect("/profile/premium?success=True")
-    else:
-        return HttpResponseRedirect("/profile")

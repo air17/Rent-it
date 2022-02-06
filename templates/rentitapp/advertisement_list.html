@@ -82,7 +82,8 @@
                 <h2 class="text-center">Объявления</h2>
                 {% if user.is_anonymous or not user.is_premium %}
                 <p class="text-center">
-                    Чтобы увидеть объявления за последние 24 часа, подключите <a href="{% url "accounts:premium" %}">премиум доступ</a>
+                    Чтобы увидеть объявления за последние 24 часа, подключите
+                    <a href="{% url "subscriptions:premium" %}">премиум доступ</a>
                 </p>
                 {% endif %}
                 <p class="text-left">Сортировка:

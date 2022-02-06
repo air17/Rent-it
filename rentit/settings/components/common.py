@@ -23,6 +23,8 @@ INSTALLED_APPS: Tuple[str, ...] = (
     # Your apps go here:
     "apps.rentitapp",
     "apps.accounts",
+    "apps.payments",
+    "apps.subscriptions",
     # Django Rest Framework
     "rest_framework",
     # Default django apps:

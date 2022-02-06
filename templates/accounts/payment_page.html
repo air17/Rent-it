@@ -1,7 +1,0 @@
-{% extends "base.html" %}
-
-{% block content %}
-    Ваш платёж обрабатывается...
-    <a href="{% url "accounts:payment" %}?cancel=1">Начать заново</a>
-    <p><button onclick="location.reload()">Обновить статус</button></p>
-{% endblock %}

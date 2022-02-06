@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import User, Membership
 
 
 class CustomUserAdmin(UserAdmin):
@@ -29,7 +30,6 @@ class CustomUserAdmin(UserAdmin):
             "Permissions",
             {
                 "fields": (
-                    "is_premium",
                     "is_active",
                     "is_staff",
                     "is_superuser",
@@ -64,7 +64,6 @@ class CustomUserAdmin(UserAdmin):
         "first_name",
         "last_name",
         "is_staff",
-        "is_premium",
     )
     search_fields = (
         "email",
@@ -74,4 +73,12 @@ class CustomUserAdmin(UserAdmin):
     ordering = ("email",)
 
 
+class CustomModel(ModelAdmin):
+    list_display = (
+        "user",
+        "plan",
+    )
+
+
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Membership, CustomModel)

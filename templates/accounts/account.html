@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>Личный кабинет</h2>
-    <img alt="Фото профиля" src="{{ user.get_avatar_url }}" width="150px" height="150px">
+    <img alt="Фото профиля" src="{{ user.avatar_url }}" width="150px" height="150px">
     <ul>
         <li><b>{{ user.get_full_name }}</b></li>
         <li>{{ user.email }}</li>
@@ -10,9 +10,9 @@
         <li><i><b>{{ user.phone }}</b></i></li>
         <li>Премиум доступ:
             {% if user.is_premium %}
-                Подключён (<a href="{% url "accounts:premium" %}">Продлить</a>)
+                Подключён (<a href="{% url "subscriptions:premium" %}">Продлить</a>)
             {% else %}
-                Отключён (<a href="{% url "accounts:premium" %}">Подключить</a>)
+                Отключён (<a href="{% url "subscriptions:premium" %}">Подключить</a>)
             {% endif %}</li>
     </ul>
 

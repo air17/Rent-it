@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Премиум-доступ</h1>
+    {% if user.is_premium %}
+        У вас активирована премиум-подписка до {{ user.membership.premiumsubscription.expiration_date }}
+        <p>Стоимость продления на месяц - {{ price }} рублей. Чтобы продлить нажмите
+            <button onclick="location='{% url "payments:premium" %}'">Оплата</button>
+        </p>
+    {% else %}
+        <p>Стоимость премиум-доступа - {{ price }} рублей в месяц.</p>
+        <p>Чтобы оплатить нажмите
+            <button onclick="location='{% url "payments:premium" %}'">Оплата</button>
+        </p>
+    {% endif %}
+    <p><i>Обновите страницу, если информация устарела</i></p>
+{% endblock %}

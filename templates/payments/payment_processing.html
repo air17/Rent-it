@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Ваш платёж обрабатывается...</h2>
+    <script>
+    setTimeout(()=>{location='{% url "subscriptions:premium" %}'}, 2000)
+    </script>
+{% endblock %}
