@@ -1,37 +1,39 @@
 {% extends "base.html" %}
-
+{% block title %}Личный кабинет - {% endblock %}
 {% block content %}
-    <h2>Личный кабинет</h2>
-    <img alt="Фото профиля" src="{{ user.avatar_url }}" width="150px" height="150px">
-    <ul>
-        <li><b>{{ user.get_full_name }}</b></li>
-        <li>{{ user.email }}</li>
-        <li>Зарегистрирован: {{ user.date_joined }}</li>
-        <li><i><b>{{ user.phone }}</b></i></li>
-        <li>Премиум доступ:
+    <h2>Личный кабинет</h2><br>
+
+    <div>
+        <p><img alt="Фото профиля" src="{{ user.avatar_url }}" height="120px"></p>
+        <p><b>{{ user.get_full_name }}</b></p>
+        <p>Email: {{ user.email }}</p>
+        <p>Зарегистрирован: {{ user.date_joined }}</p>
+        <p>Телефон: <i>{{ user.phone }}</i></p>
+        <p>Премиум доступ:
             {% if user.is_premium %}
                 Подключён (<a href="{% url "subscriptions:premium" %}">Продлить</a>)
             {% else %}
                 Отключён (<a href="{% url "subscriptions:premium" %}">Подключить</a>)
-            {% endif %}</li>
-    </ul>
+            {% endif %}</p>
+    </div>
 
     <a href="{% url 'password_change' %}">Изменить пароль</a>
-    <hr>
+    <br>
     <a href="{% url 'logout' %}">Выйти</a>
 
     <hr>
     <h3>Мои объявления:</h3>
     {% if not active_ads %}<p><i>Отсутствуют</i></p>{% endif %}
     {% for ad in active_ads %}
-        <ul>
-            <li><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
-            <li>{{ ad.description }}</li>
-            <li><i><b>{{ ad.price }}</b></i></li>
-            <li><i>{{ ad.address }}</i></li>
-        </ul>
-        <p><a href="{% url "rentitapp:edit" ad.id %}">Редактировать</a></p>
-        <p><a href="{% url "rentitapp:advertisement" ad.id %}?deactivate=1&next=profile">Снять с публикации</a></p>
+        <div>
+            <p><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></p>
+            <p>{{ ad.description|truncatechars:300 }}</p>
+            <p><i><b>{{ ad.price }} руб.</b></i></p>
+            <p>Адрес: <i>{{ ad.address }}</i></p>
+
+            <p><a href="{% url "rentitapp:edit" ad.id %}">Редактировать</a></p>
+            <p><a href="{% url "rentitapp:advertisement" ad.id %}?deactivate=1&next=profile">Снять с публикации</a></p>
+        </div>
         <br>
     {% endfor %}
 
@@ -40,17 +42,17 @@
         <h3>Снятые с публикации объявления:</h3>
         <div style="color: gray">
         {% for ad in deactivated_ads %}
-            <ul>
-                <li><b><a style="color: gray" href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
-                <li>{{ ad.description }}</li>
-                <li><i><b>{{ ad.price }}</b></i></li>
-                <li><i>{{ ad.address }}</i></li>
-            </ul>
+        <div>
+            <p><b><a style="color: gray" href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></p>
+            <p>{{ ad.description|truncatechars:300 }}</p>
+            <p><i><b>{{ ad.price }} руб.</b></i></p>
+            <p>Адрес: <i>{{ ad.address }}</i></p>
+
             <p><a href="{% url "rentitapp:edit" ad.id %}">Редактировать</a></p>
             <p><a href="{% url "rentitapp:advertisement" ad.id %}?activate=1&next=profile">Опубликовать снова</a></p>
             <p><a href="{% url "rentitapp:advertisement" ad.id %}?delete=1">Удалить объявление</a></p>
-        {% endfor %}
         </div>
+        {% endfor %}
     {% endif %}
 
     <hr>

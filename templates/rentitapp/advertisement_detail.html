@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% block title %}{{ advertisement.name }} - {% endblock %}
 {% block content %}
     {% if just_added %}
         <div class="bg-success" style="color: white; width: 100%; text-align: center">
@@ -7,24 +7,26 @@
         </div>
     {% endif %}
 
-    <h2>Объявление:</h2>
     {% if not advertisement.active %}
-        <h3 style="color: red">Объявление снято с публикации</h3>
+        <h4 style="color: red">Объявление снято с публикации</h4><hr>
     {% endif %}
-    <ul>
-        <li>{{ category }} <b>{{ advertisement.name }}</b></li>
-        <li><img src="{{ advertisement.picture.url }}" height="200px"/></li>
-        <li>{{ advertisement.description }}</li>
-        <li>Опубликовано: {{ advertisement.date_published }}</li>
-        <li><i><b>{{ advertisement.price }}</b></i></li>
-        <li><i>{{ advertisement.author.get_full_name }}</i></li>
-        {% if advertisement.author.phone %}
-            <li><i>{{ advertisement.author.phone }}</i></li>
-        {% endif %}
-        {% if advertisement.address %}
-            <li>{{ advertisement.address }}</li>
-        {% endif %}
-    </ul>
+
+    <h2>Объявление:</h2>
+    <p>{{ category }} <b>{{ advertisement.name }}</b></p>
+    <p><img alt="Advertisement photo" src="{{ advertisement.picture.url }}" height="400px"/></p>
+    <p>{{ advertisement.description }}</p>
+    <p><i><b>{{ advertisement.price }} руб.</b></i></p>
+    <p>Арендодатель:
+        <a href={% url "accounts:userprofile" advertisement.author.id  %}>
+            <i>{{ advertisement.author.get_full_name }}</i>
+        </a>
+    </p>
+    {% if advertisement.author.phone %}
+        <p>Телефон: <i>{{ advertisement.author.phone }}</i></p>
+    {% endif %}
+    <p>Адрес: {{ advertisement.address }}</p>
+    <p><i>Опубликовано: {{ advertisement.date_published }}</i></p>
+
     {% if user == advertisement.author %}
         <a href="{% url "rentitapp:edit" advertisement.id %}">Редактировать</a>
         {% if advertisement.active %}
@@ -34,9 +36,11 @@
             <p><a href="{% url "rentitapp:advertisement" advertisement.id %}?delete=1">Удалить объявление</a></p>
         {% endif %}
     {% endif %}
+
     {% if comment_added %}
-        <div style="color: white; background-color: green;">Комментарий опубликован</div>
+        <div class="bg-success" style="color: white;">Комментарий опубликован</div>
     {% endif %}
+
     {% if user != advertisement.author and user.is_authenticated and not comment_added %}
         <hr>
         <h4>Добавить комментарий:</h4>

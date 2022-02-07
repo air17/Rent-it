@@ -1,40 +1,46 @@
 {% extends "base.html" %}
-
+{% block title %}{{ user.get_full_name }} - {% endblock %}
 {% block content %}
-    <a href="{% url "rentitapp:index" %}">На главную</a>
     <h2>Профиль пользователя {{ user.get_full_name }}</h2>
-    <img src="{{ user.get_avatar_url }}" width="150px" height="150px">
-    <ul>
-        <li>{{ user.email }}</li>
-        <li>Зарегистрирован: {{ user.date_joined }}</li>
-        <li><i><b>{{ user.phone }}</b></i></li>
-    </ul>
+    <p><img alt="Фото профиля" src="{{ user.avatar_url }}" height="120px"></p>
+    <p>Email: {{ user.email }}</p>
+    <p>Зарегистрирован: {{ user.date_joined }}</p>
+    <p>Телефон: <i>{{ user.phone }}</i></p>
 
     <hr>
     <h3>Объявления пользователя:</h3>
     {% if not public_ads %}<p><i>Отсутствуют</i></p>{% endif %}
     {% for ad in public_ads %}
-        <ul>
-            <li><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></li>
-            <li>{{ ad.description }}</li>
-            <li><i><b>{{ ad.price }}</b></i></li>
-            <li><i>{{ ad.address }}</i></li>
-        </ul>
+        <div>
+            <p><b><a href="{% url "rentitapp:advertisement" ad.id %}"> {{ ad.name }} </a></b></p>
+            <p>{{ ad.description|truncatechars:300 }}</p>
+            <p><i><b>{{ ad.price }} руб.</b></i></p>
+            <p>Адрес: <i>{{ ad.address }}</i></p>
+        </div>
         <br>
     {% endfor %}
 
     <hr>
     <h3>Комментарии:</h3>
     {% if not comments %}<p><i>Отсутствуют</i></p>{% endif %}
+
     {% for comment in comments %}
-        <div style="margin-left: 2%">
-        <p><b>{{ comment.author.get_full_name }}:</b></p>
+        <div class="bg-light" style="margin-left: 2%">
+            <p><a href={% url "accounts:userprofile" comment.author.id  %}>
+                {{ comment.author.get_full_name }}:
+            </a></p>
+
             {% if comment.advertisement %}
-            <p><i>К объявлению: {{ comment.advertisement.name }}</i></p>
+            <p><i>К объявлению:
+                <a href={% url "rentitapp:advertisement" comment.advertisement.id  %}>
+                    {{ comment.advertisement.name }}
+                </a>
+            </i></p>
             {% endif %}
-        <p>{{ comment.text }}</p>
-        <p><i>Добавлен: {{ comment.date_published }}</i></p>
-        <hr>
+
+            <p class="bg-white">{{ comment.text }}</p>
+            <p><i>Добавлен: {{ comment.date_published }}</i></p>
         </div>
+        <br>
     {% endfor %}
 {% endblock %}

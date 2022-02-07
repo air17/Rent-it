@@ -84,32 +84,42 @@
                 <p class="text-center">
                     Чтобы увидеть объявления за последние 24 часа, подключите
                     <a href="{% url "subscriptions:premium" %}">премиум доступ</a>
-                </p>
+                </p><br>
                 {% endif %}
-                <p class="text-left">Сортировка:
-                    <select onchange="location = this.value;">
-                        <option value="/">По умолчанию</option>
-                        <option {% if sort == "price" %}selected{% endif %} value="?sort=price">Цена по возрастанию</option>
-                        <option {% if sort == "price_d" %}selected{% endif %} value="?sort=price&desc=1">Цена по убыванию</option>
-                        <option {% if sort == "date_published_d" %}selected{% endif %} value="?sort=date_published&desc=1">Дата публикации (сначала новые)</option>
-                        <option {% if sort == "date_published" %}selected{% endif %} value="?sort=date_published">Дата публикации (сначала старые)</option>
-                    </select>
+                <p class="text-left">
+                    <label>Сортировка:
+                        <select onchange="location = this.value;">
+                            <option value="/">По умолчанию</option>
+                            <option {% if sort == "price" %}selected{% endif %} value="?sort=price">Цена по возрастанию</option>
+                            <option {% if sort == "price_d" %}selected{% endif %} value="?sort=price&desc=1">Цена по убыванию</option>
+                            <option {% if sort == "date_published_d" %}selected{% endif %} value="?sort=date_published&desc=1">Дата публикации (сначала новые)</option>
+                            <option {% if sort == "date_published" %}selected{% endif %} value="?sort=date_published">Дата публикации (сначала старые)</option>
+                        </select>
+                    </label>
                 </p>
-                <p class="text-left">Тип жилья:
-                    <select onchange="location = this.value;">
-                        {% for category_option in categories %}
-                        <option {% if category_selected == category_option.value %}selected{% endif %} value="?category={{ category_option.value }}">
-                            {{ category_option.label }}
-                        </option>
-                        {% endfor %}
-                    </select>
+                <p class="text-left">
+                    <label>Тип жилья:
+                        <select onchange="location = this.value;">
+                            {% for category_option in categories %}
+                            <option {% if category_selected == category_option.value %}selected{% endif %} value="?category={{ category_option.value }}">
+                                {{ category_option.label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </label>
                 </p>
             </div>
+            {% if not advertisement_list %}
+                    <div class="col-auto item">
+                    <h3 class="name">Нет объявлений</h3>
+                    <p class="description">Ваше будет первым!</p>
+                    </div>
+            {% else %}
             <div class="row articles">
                 {% for ad in advertisement_list %}
                 <div class="col-sm-6 col-md-4 item">
                     <a href="{% url "rentitapp:advertisement" ad.id %}">
-                        <img class="img-fluid" src="{{ ad.picture.url }}">
+                        <img alt="Фото объекта" class="img-fluid" src="{{ ad.picture.url }}">
                     </a>
                     <h3 class="name">{{ ad.name|truncatechars:30 }}</h3>
                     <p class="description">{{ ad.description|truncatechars:280 }}</p>
@@ -121,13 +131,26 @@
                     </a>
                 </div>
                 {% endfor %}
-                {% if not advertisement_list %}
-                    <div class="col-sm-6 col-md-4 item">
-                    <h3 class="name">Нет объявлений</h3>
-                    <p class="description">Ваше будет первым!</p>
-                    </div>
-                {% endif %}
             </div>
+            {% endif %}
         </div>
+    </div>
+
+    <div class="pagination d-flex justify-content-center">
+        <span class="step-links">
+            {% if advertisement_list.has_previous %}
+                <a href="?page=1">&laquo; первая</a>
+                <a href="?page={{ advertisement_list.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                стр. {{ advertisement_list.number }} из {{ advertisement_list.paginator.num_pages }}
+            </span>
+
+            {% if advertisement_list.has_next %}
+                <a href="?page={{ advertisement_list.next_page_number }}">след.</a>
+                <a href="?page={{ advertisement_list.paginator.num_pages }}">последняя &raquo;</a>
+            {% endif %}
+        </span>
     </div>
 {% endblock %}
