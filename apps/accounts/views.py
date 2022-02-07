@@ -4,33 +4,31 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.views.generic import DetailView
 
 from apps.rentitapp import models, forms
 
 
 # profile page
-class UserView(DetailView):
-    model = get_user_model()
-    template_name = "accounts/profile.html"
+@login_required
+def profile_view(request, pk):
+    user = get_user_model().objects.get(pk=pk)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    context = {"user": user}
 
-        # Adding comments
-        comments = models.Comment.objects.filter(profile=self.object)
-        context["comments"] = comments
+    # Adding comments
+    comments = models.Comment.objects.filter(profile=user)
+    context["comments"] = comments
 
-        # Adding active ads of the user
-        public_ads = models.Advertisement.objects.filter(author=self.object, active=True)
+    # Adding active ads of the user
+    public_ads = models.Advertisement.objects.filter(author=user, active=True)
 
-        # Removing new ads for non-premium users
-        if self.request.user.is_anonymous or not self.request.user.is_premium:
-            public_ads = public_ads.filter(date_published__lte=timezone.now() - timedelta(days=1))
+    # Filtering new ads for non-premium users
+    if request.user.is_anonymous or not request.user.is_premium:
+        public_ads = public_ads.filter(date_published__lte=timezone.now() - timedelta(days=1))
 
-        context["public_ads"] = public_ads
+    context["public_ads"] = public_ads
 
-        return context
+    return render(request, "accounts/profile.html", context)
 
 
 # personal account page
