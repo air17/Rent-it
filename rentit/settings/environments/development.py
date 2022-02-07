@@ -51,7 +51,7 @@ INSTALLED_APPS += (
 # Static files:
 # https://docs.djangoproject.com/en/4.0/ref/settings/#std:setting-STATICFILES_DIRS
 
-STATICFILES_DIRS: List[str] = []
+STATICFILES_DIRS: List[str] = ["static"]
 
 
 # Django debug toolbar:
@@ -82,7 +82,7 @@ DEBUG_TOOLBAR_CONFIG = {
 MIDDLEWARE = ("nplusone.ext.django.NPlusOneMiddleware",) + MIDDLEWARE  # noqa: WPS440
 
 # Logging N+1 requests:
-NPLUSONE_RAISE = True  # comment out if you want to allow N+1 requests
+# NPLUSONE_RAISE = True  # comment out if you want to allow N+1 requests
 NPLUSONE_LOGGER = logging.getLogger("django")
 NPLUSONE_LOG_LEVEL = logging.WARN
 NPLUSONE_WHITELIST = [
