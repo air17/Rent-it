@@ -51,6 +51,7 @@ class Comment(models.Model):
         get_user_model(),
         on_delete=models.CASCADE,
         related_name="comment_author",
+        db_index=True,
     )
     # advertisement author
     profile = models.ForeignKey(
@@ -60,10 +61,17 @@ class Comment(models.Model):
     )
     advertisement = models.ForeignKey(
         Advertisement,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
+        null=True,
+        db_index=True,
     )
     text = models.TextField()
     date_published = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.text
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(fields=("author", "advertisement"), name="unique_author_advertisement"),
+        )
