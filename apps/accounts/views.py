@@ -21,14 +21,12 @@ class UserView(DetailView):
         comments = models.Comment.objects.filter(profile=self.object)
         context["comments"] = comments
 
-        # Adding active ads
-        public_ads = list(models.Advertisement.objects.filter(author=self.object, active=True))
+        # Adding active ads of the user
+        public_ads = models.Advertisement.objects.filter(author=self.object, active=True)
 
         # Removing new ads for non-premium users
         if self.request.user.is_anonymous or not self.request.user.is_premium:
-            for ad in public_ads:
-                if ad.date_published > timezone.now() - timedelta(days=1):
-                    public_ads.remove(ad)
+            public_ads = public_ads.filter(date_published__lte=timezone.now() - timedelta(days=1))
 
         context["public_ads"] = public_ads
 

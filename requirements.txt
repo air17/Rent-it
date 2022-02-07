@@ -1,5 +1,7 @@
 Django==4.0.2
 djangorestframework==3.13.1
+psycopg2==2.9.3
+Pillow==9.0.1
 python-decouple==3.6
 uuid==1.30
 django-axes==5.31.0

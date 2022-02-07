@@ -88,19 +88,20 @@
                 {% endif %}
                 <p class="text-left">Сортировка:
                     <select onchange="location = this.value;">
-                        <option value="/?sort=1">По умолчанию</option>
-                        <option {% if sort == "price" %}selected{% endif %} value="/?sort=price">Цена по возрастанию</option>
-                        <option {% if sort == "price_d" %}selected{% endif %} value="/?sort=price&desc=1">Цена по убыванию</option>
-                        <option {% if sort == "date_published_d" %}selected{% endif %} value="/?sort=date_published&desc=1">Дата публикации (сначала новые)</option>
-                        <option {% if sort == "date_published" %}selected{% endif %} value="/?sort=date_published">Дата публикации (сначала старые)</option>
+                        <option value="/">По умолчанию</option>
+                        <option {% if sort == "price" %}selected{% endif %} value="?sort=price">Цена по возрастанию</option>
+                        <option {% if sort == "price_d" %}selected{% endif %} value="?sort=price&desc=1">Цена по убыванию</option>
+                        <option {% if sort == "date_published_d" %}selected{% endif %} value="?sort=date_published&desc=1">Дата публикации (сначала новые)</option>
+                        <option {% if sort == "date_published" %}selected{% endif %} value="?sort=date_published">Дата публикации (сначала старые)</option>
                     </select>
                 </p>
                 <p class="text-left">Тип жилья:
                     <select onchange="location = this.value;">
-                        <option value="/?category=all">Все типы</option>
-                        <option {% if category == "flat" %}selected{% endif %} value="/?category=flat">Квартиры</option>
-                        <option {% if category == "house" %}selected{% endif %} value="/?category=house">Дома</option>
-                        <option {% if category == "room" %}selected{% endif %} value="/?category=room">Комнаты</option>
+                        {% for category_option in categories %}
+                        <option {% if category_selected == category_option.value %}selected{% endif %} value="?category={{ category_option.value }}">
+                            {{ category_option.label }}
+                        </option>
+                        {% endfor %}
                     </select>
                 </p>
             </div>
@@ -110,12 +111,14 @@
                     <a href="{% url "rentitapp:advertisement" ad.id %}">
                         <img class="img-fluid" src="{{ ad.picture.url }}">
                     </a>
-                    <h3 class="name">{{ ad.name }}</h3>
-                    <p class="description">{{ ad.description }}</p>
+                    <h3 class="name">{{ ad.name|truncatechars:30 }}</h3>
+                    <p class="description">{{ ad.description|truncatechars:280 }}</p>
                     <h5>{{ ad.price }} руб.</h5>
                     <p>Адрес: <i>{{ ad.address }}</i></p>
-                    <i>Опубликовано: {{ ad.date_published }}</i>
-                    <a class="action" href="{% url "rentitapp:advertisement" ad.id %}"><i class="fa fa-arrow-circle-right"></i></a>
+                    <p class="description"><i>Опубликовано: {{ ad.date_published }}</i></p>
+                    <a class="action" href="{% url "rentitapp:advertisement" ad.id %}">
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </a>
                 </div>
                 {% endfor %}
                 {% if not advertisement_list %}

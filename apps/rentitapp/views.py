@@ -1,60 +1,50 @@
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from django.views.generic import ListView
 
 from . import models, forms
 
 
 # main page
-class IndexView(ListView):
-    model = models.Advertisement
+def advertisement_list(request):
+    ads_list = models.Advertisement.objects.all()
 
-    # changing default context
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    context = {}
 
-        # sorting
-        sort_by = self.request.GET.get("sort")
-        if sort_by:
-            if sort_by in ["name", "date_published", "price"]:
-                context["advertisement_list"] = context["advertisement_list"].order_by(sort_by)
-                context["sort"] = sort_by
-                if self.request.GET.get("desc"):
-                    context["advertisement_list"] = context["advertisement_list"].reverse()
-                    context["sort"] += "_d"
+    # sorting
+    sort_by = request.GET.get("sort")
+    if sort_by in ("name", "date_published", "price"):
+        ads_list = ads_list.order_by(sort_by)
+        context["sort"] = sort_by
+        if request.GET.get("desc"):
+            ads_list = ads_list.reverse()
+            context["sort"] += "_d"
 
-        # filtering categories
-        category = self.request.GET.get("category")
-        if category:
-            context["category"] = category
-            if category == "flat":
-                context["advertisement_list"] = context["advertisement_list"].filter(
-                    category=models.Advertisement.FlatCategory.FLAT
-                )
-            elif category == "house":
-                context["advertisement_list"] = context["advertisement_list"].filter(
-                    category=models.Advertisement.FlatCategory.HOUSE
-                )
-            elif category == "room":
-                context["advertisement_list"] = context["advertisement_list"].filter(
-                    category=models.Advertisement.FlatCategory.ROOM
-                )
+    # adding available accommodation categories to context
+    context["categories"] = [*models.Advertisement.FlatCategory]
 
-        # removing non-active ads
-        context["advertisement_list"] = list(filter(lambda ad: ad.active, context["advertisement_list"]))
+    # filtering categories
+    category_selected: str = request.GET.get("category")
+    if category_selected in models.Advertisement.FlatCategory.values[1:]:
+        context["category_selected"] = category_selected
+        ads_list = ads_list.filter(category=category_selected)
 
-        # removing new ads for non-premium
-        if self.request.user.is_anonymous or not self.request.user.is_premium:
-            context["advertisement_list"] = list(
-                filter(
-                    lambda ad: ad.date_published < timezone.now() - timedelta(days=1), context["advertisement_list"]
-                )
-            )
+    # removing deactivated ads
+    ads_list = ads_list.filter(active=True)
 
-        return context
+    # removing new ads for non-premium
+    if request.user.is_anonymous or not request.user.is_premium:
+        ads_list = ads_list.filter(date_published__lte=timezone.now() - timedelta(days=1))
+
+    # TODO: pagination
+
+    # adding ads to context
+    context["advertisement_list"] = ads_list
+
+    return render(request, "rentitapp/advertisement_list.html", context)
 
 
 # advertisement details page
