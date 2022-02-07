@@ -16,14 +16,13 @@ class MyUserManager(UserManager):
     use_in_migrations = True
 
     def _create_user(self, email, password, **extra_fields):
-        """Create and save a User with the given email and password and assign a membership."""
+        """Create and save a User with the given email and password."""
         if not email:
             raise ValueError("The given email must be set")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)
-        Membership.objects.create(user=user)
         return user
 
     def create_user(self, email, password=None, **extra_fields):
@@ -81,6 +80,10 @@ class User(AbstractUser):
 
     objects = MyUserManager()
     backend = "django.contrib.auth.backends.ModelBackend"
+
+    def save(self, *args, **kwargs):
+        super(User, self).save(*args, **kwargs)
+        Membership.objects.get_or_create(user=self)
 
     def __str__(self):
         return self.get_full_name()
