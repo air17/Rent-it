@@ -6,9 +6,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from . import models, forms
+from .constants import days_till_free
+from .services import process_comment
 
 
-# main page
 def advertisement_list(request):
     ads_list = models.Advertisement.objects.all()
 
@@ -37,34 +38,36 @@ def advertisement_list(request):
 
     # removing new ads for non-premium
     if request.user.is_anonymous or not request.user.is_premium:
-        ads_list = ads_list.filter(date_published__lte=timezone.now() - timedelta(days=1))
+        ads_list = ads_list.filter(date_published__lte=timezone.now() - timedelta(days=days_till_free))
 
-    # TODO: pagination
+    paginator = Paginator(ads_list, 9)  # Show 9 ads per page.
+    page_number = request.GET.get("page")
 
-    # adding ads to context
-    context["advertisement_list"] = ads_list
+    # adding paginated ads to context
+    context["advertisement_list"] = paginator.get_page(page_number)
 
     return render(request, "rentitapp/advertisement_list.html", context)
 
 
 # advertisement details page
-def advertisement_view(request, pk=None):
+def advertisement_detail(request, pk=None):
     ad = get_object_or_404(models.Advertisement, pk=pk)
 
     # Redirect if ad is new and user is not premium
     if (
         request.user != ad.author
         and (request.user.is_anonymous or not request.user.is_premium)
-        and ad.date_published > timezone.now() - timedelta(days=1)
+        and ad.date_published > timezone.now() - timedelta(days=days_till_free)
     ):
         return HttpResponseRedirect("/")
 
-    # Setting context, adding category label, adding default variables
+    # Setting up context, adding category label, default variables, comment form
     context = {
         "advertisement": ad,
         "category": ad.FlatCategory(ad.category).label,
         "just_added": False,
         "comment_added": False,
+        "new_comment": forms.NewComment(),
     }
 
     # Showing notification when added or edited
@@ -74,24 +77,13 @@ def advertisement_view(request, pk=None):
         if request.GET.get("edited"):
             context["status_text"] = "Объявление отредактировано"
 
-    # Comments form
-    context["new_comment"] = forms.NewComment()
-
-    # Processing comment
-    if request.GET.get("comment") and request.user.is_authenticated and request.user != ad.author:
-        # TODO: Allow only one comment per user
+    # Processing adding comment
+    elif request.GET.get("comment") and request.user.is_authenticated and request.user != ad.author:
         form = forms.NewComment(request.GET)
-        if form.is_valid():
-            models.Comment.objects.create(
-                author=request.user,
-                profile=ad.author,
-                advertisement=ad,
-                text=form.cleaned_data["comment"],
-            )
-            context["comment_added"] = True
+        context["comment_added"] = process_comment(form, request.user, ad)
 
     # Processing deactivation
-    if request.GET.get("deactivate") and ad.active and request.user == ad.author:
+    elif request.GET.get("deactivate") and ad.active and request.user == ad.author:
         ad.active = False
         ad.save()
         if request.GET.get("next") == "profile":
@@ -104,7 +96,7 @@ def advertisement_view(request, pk=None):
         if request.GET.get("next") == "profile":
             return redirect("accounts:account")
 
-    # Processing delete
+    # Processing deletion
     elif request.GET.get("delete") and not ad.active and request.user == ad.author:
         ad.delete()
         return redirect("accounts:account")
@@ -126,13 +118,9 @@ def advertisement_edit(request, pk=None):
             return HttpResponseRedirect(f"/detail/{ad.id}?edited=1")
     else:
         form = forms.EditAdvertisement(instance=ad)
-        return render(
-            request,
-            "rentitapp/advertisement_edit.html",
-            {
-                "form": form,
-            },
-        )
+
+    context = {"form": form}
+    return render(request, "rentitapp/advertisement_edit.html", context)
 
 
 # create ad page
@@ -146,16 +134,8 @@ def advertisement_create(request):
             instance.save()
 
             return HttpResponseRedirect(f"detail/{instance.id}?success=1")
-        else:
-            print(form.errors)
-
     else:
         form = forms.EditAdvertisement()
 
-    return render(
-        request,
-        "rentitapp/advertisement_edit.html",
-        {
-            "form": form,
-        },
-    )
+    context = {"form": form}
+    return render(request, "rentitapp/advertisement_edit.html", context)
