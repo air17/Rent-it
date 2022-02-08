@@ -20,13 +20,14 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 # Application definition:
 
 INSTALLED_APPS: Tuple[str, ...] = (
-    # Your apps go here:
     "apps.rentitapp",
     "apps.accounts",
     "apps.payments",
     "apps.subscriptions",
     # Django Rest Framework
     "rest_framework",
+    # Django Cleanup
+    "django_cleanup.apps.CleanupConfig",
     # Default django apps:
     "django.contrib.auth",
     "django.contrib.contenttypes",

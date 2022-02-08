@@ -25,6 +25,7 @@ _ENV = environ["DJANGO_ENV"]
 _base_settings = (
     "components/common.py",
     "components/caches.py",
+    "components/storages.py",  # comment out to use default storage instead of GCS
     # Select the right env:
     "environments/{0}.py".format(_ENV),
     # Optionally override some settings:
