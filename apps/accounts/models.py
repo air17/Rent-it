@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser, UserManager
 
-from rentit.settings.components.common import MEDIA_URL
+from rentit.settings.components.common import STATIC_URL
 from utils.random_filename import RandomFileName
 
 logger = logging.getLogger(__name__)
@@ -69,7 +69,7 @@ class User(AbstractUser):
         if self.picture:
             return self.picture.url
         else:
-            return MEDIA_URL + "user.png"
+            return STATIC_URL + "user.png"
 
     @property
     def is_premium(self):
