@@ -13,8 +13,6 @@ logger = logging.getLogger(__name__)
 class MyUserManager(UserManager):
     """Define a model manager for User model with no username field."""
 
-    use_in_migrations = True
-
     def _create_user(self, email, password, **extra_fields):
         """Create and save a User with the given email and password."""
         if not email:
@@ -45,6 +43,12 @@ class MyUserManager(UserManager):
 
 
 class User(AbstractUser):
+    """
+    Stores a user profile.
+
+    All fields except picture are required.
+    """
+
     username = None
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
@@ -56,6 +60,7 @@ class User(AbstractUser):
     picture = models.ImageField(
         verbose_name="user avatar",
         blank=True,
+        null=True,
         upload_to=RandomFileName("avatars"),
     )
     phone = models.CharField(
@@ -66,6 +71,7 @@ class User(AbstractUser):
 
     @property
     def avatar_url(self):
+        """Path to a user picture"""
         if self.picture:
             return self.picture.url
         else:
@@ -73,6 +79,7 @@ class User(AbstractUser):
 
     @property
     def is_premium(self):
+        """Indicates if user has premium membership"""
         return self.membership.plan == Membership.Plans.PREMIUM
 
     USERNAME_FIELD = "email"
@@ -82,6 +89,7 @@ class User(AbstractUser):
     backend = "django.contrib.auth.backends.ModelBackend"
 
     def save(self, *args, **kwargs):
+        """Saves model to database and creates a Membership if it doesn't exist"""
         super(User, self).save(*args, **kwargs)
         Membership.objects.get_or_create(user=self)
 
@@ -90,6 +98,8 @@ class User(AbstractUser):
 
 
 class Membership(models.Model):
+    """Stores User's membership plan, related to :model:`accounts.User`"""
+
     class Plans(models.IntegerChoices):
         FREE = 0, "Free"
         PREMIUM = 1, "Premium"

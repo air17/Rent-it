@@ -8,18 +8,18 @@ from django.utils import timezone
 from apps.rentitapp import models, forms
 
 
-# profile page
 @login_required
 def profile_view(request, pk):
+    """Displays a user profile, their comments and active ads."""
     user = get_user_model().objects.get(pk=pk)
 
     context = {"user": user}
 
-    # Adding comments
+    # Adding received comments to context
     comments = models.Comment.objects.filter(profile=user)
     context["comments"] = comments
 
-    # Adding active ads of the user
+    # Getting active ads of the user
     public_ads = models.Advertisement.objects.filter(author=user, active=True)
 
     # Filtering new ads for non-premium users
@@ -31,13 +31,13 @@ def profile_view(request, pk):
     return render(request, "accounts/profile.html", context)
 
 
-# personal account page
 @login_required
 def account_view(request):
-    template_name = "accounts/account.html"
+    """Displays a user profile, their comments and all ads
+    for an authenticated user.
+    """
 
     user = request.user
-
     context = {"user": user}
 
     # Adding comments
@@ -48,11 +48,12 @@ def account_view(request):
     context["active_ads"] = models.Advertisement.objects.filter(author=user, active=True)
     context["deactivated_ads"] = models.Advertisement.objects.filter(author=user, active=False)
 
-    return render(request, template_name, context)
+    return render(request, "accounts/account.html", context)
 
 
-# user registration
-def registration(request):
+def registration_view(request):
+    """Displays and processes a user registration form"""
+
     if not request.user.is_anonymous:
         return HttpResponseRedirect("/")
     if request.method == "POST":
