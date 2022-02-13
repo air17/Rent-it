@@ -15,7 +15,8 @@ class CommentSerializer(ModelSerializer):
             "date_published",
         )
 
-    def get_author(self, obj):
+    @staticmethod
+    def get_author(obj):
         if obj.author:
             return obj.author.get_full_name()
 

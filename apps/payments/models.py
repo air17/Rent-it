@@ -21,7 +21,7 @@ class YookassaPayment(models.Model):
     amount = models.CharField(max_length=20)
     user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField()
-    expires_at = models.DateTimeField(null=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
     payment_method = models.CharField(max_length=255, blank=True)
     processed = models.BooleanField(default=False)
 

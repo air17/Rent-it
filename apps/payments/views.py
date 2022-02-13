@@ -21,8 +21,8 @@ def process_notification(request):
     event = json.loads(request.body)
     try:
         notification_object = WebhookNotification(event)
-    except Exception as err:
-        logger.error(str(err))
+    except (ValueError, TypeError) as error_message:
+        logger.error(str(error_message))
         return HttpResponse(status=400)
     payment = process_payment(notification_object.object)
     if payment.status == YOOKASSA_SUCCEEDED and payment.amount == "250.00":

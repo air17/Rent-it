@@ -19,4 +19,4 @@ class UserViewSet(ModelViewSet):
             self.permission_classes += (IsSuperUser,)
         elif self.action == "update":
             self.permission_classes += (IsOwner,)
-        return super(self.__class__, self).get_permissions()
+        return super().get_permissions()
