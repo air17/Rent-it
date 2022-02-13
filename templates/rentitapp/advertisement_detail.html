@@ -30,10 +30,10 @@
     {% if user == advertisement.author %}
         <a href="{% url "rentitapp:edit" advertisement.id %}">Редактировать</a>
         {% if advertisement.active %}
-            <p><a href="{% url "rentitapp:advertisement" advertisement.id %}?deactivate=1">Снять с публикации</a></p>
+            <p><a href="{% url "rentitapp:process" advertisement.id %}?deactivate=1">Снять с публикации</a></p>
         {% else %}
-            <p><a href="{% url "rentitapp:advertisement" advertisement.id %}?activate=1">Опубликовать снова</a></p>
-            <p><a href="{% url "rentitapp:advertisement" advertisement.id %}?delete=1">Удалить объявление</a></p>
+            <p><a href="{% url "rentitapp:process" advertisement.id %}?activate=1">Опубликовать снова</a></p>
+            <p><a href="{% url "rentitapp:process" advertisement.id %}?delete=1">Удалить объявление</a></p>
         {% endif %}
     {% endif %}
 
@@ -44,7 +44,7 @@
     {% if user != advertisement.author and user.is_authenticated and not comment_added %}
         <hr>
         <h4>Добавить комментарий:</h4>
-        <form>
+        <form action="{% url "rentitapp:comment" advertisement.id %}">
         {% csrf_token %}
         <p>{{ new_comment.comment }}</p>
         <p><input type="submit" value="Добавить"></p>

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.utils import timezone
 
 from . import models, forms
@@ -51,7 +52,7 @@ def advertisement_list(request):
     return render(request, "rentitapp/advertisement_list.html", context)
 
 
-def advertisement_detail(request, pk=None):
+def advertisement_detail(request, pk):
     """Displays an advertisement and comment form."""
 
     ad = get_object_or_404(models.Advertisement, pk=pk)
@@ -79,31 +80,8 @@ def advertisement_detail(request, pk=None):
         context["status_text"] = "Объявление успешно размещено!"
         if request.GET.get("edited"):
             context["status_text"] = "Объявление отредактировано"
-
-    # TODO: Make additional views for the code below
-    # Processing adding comment
-    elif request.GET.get("comment") and request.user.is_authenticated and request.user != ad.author:
-        form = forms.NewComment(request.GET)
-        context["comment_added"] = process_comment(form, request.user, ad)
-
-    # Processing deactivation
-    elif request.GET.get("deactivate") and ad.active and request.user == ad.author:
-        ad.active = False
-        ad.save()
-        if request.GET.get("next") == "profile":
-            return redirect("accounts:account")
-
-    # Processing reactivation
-    elif request.GET.get("activate") and not ad.active and request.user == ad.author:
-        ad.active = True
-        ad.save()
-        if request.GET.get("next") == "profile":
-            return redirect("accounts:account")
-
-    # Processing deletion
-    elif request.GET.get("delete") and not ad.active and request.user == ad.author:
-        ad.delete()
-        return redirect("accounts:account")
+    elif request.GET.get("comment_added"):
+        context["comment_added"] = True
 
     return render(request, "rentitapp/advertisement_detail.html", context=context)
 
@@ -145,3 +123,45 @@ def advertisement_create(request):
 
     context = {"form": form}
     return render(request, "rentitapp/advertisement_edit.html", context)
+
+
+def advertisement_process(request, pk):
+    """Processes advertisement deactivation, reactivation and deletion."""
+
+    ad = get_object_or_404(models.Advertisement, pk=pk)
+
+    if request.user != ad.author:
+        return redirect("/")
+
+    # Processing deactivation
+    if request.GET.get("deactivate") and ad.active:
+        ad.active = False
+        ad.save()
+        if request.GET.get("next") == "profile":
+            return redirect("accounts:account")
+
+    # Processing reactivation
+    elif request.GET.get("activate") and not ad.active:
+        ad.active = True
+        ad.save()
+        if request.GET.get("next") == "profile":
+            return redirect("accounts:account")
+
+    # Processing deletion
+    elif request.GET.get("delete") and not ad.active:
+        ad.delete()
+        return redirect("accounts:account")
+
+    return redirect("rentitapp:advertisement", pk=pk)
+
+
+def comment_processing(request, pk):
+    """Processing adding comment"""
+
+    ad = get_object_or_404(models.Advertisement, pk=pk)
+
+    if request.user.is_authenticated and request.user != ad.author:
+        form = forms.NewComment(request.GET)
+        process_comment(form, request.user, ad)
+
+    return redirect(reverse("rentitapp:advertisement", args=(pk,)) + "?comment_added=1")

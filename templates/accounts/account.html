@@ -32,7 +32,7 @@
             <p>Адрес: <i>{{ ad.address }}</i></p>
 
             <p><a href="{% url "rentitapp:edit" ad.id %}">Редактировать</a></p>
-            <p><a href="{% url "rentitapp:advertisement" ad.id %}?deactivate=1&next=profile">Снять с публикации</a></p>
+            <p><a href="{% url "rentitapp:process" ad.id %}?deactivate=1&next=profile">Снять с публикации</a></p>
         </div>
         <br>
     {% endfor %}
@@ -49,8 +49,8 @@
             <p>Адрес: <i>{{ ad.address }}</i></p>
 
             <p><a href="{% url "rentitapp:edit" ad.id %}">Редактировать</a></p>
-            <p><a href="{% url "rentitapp:advertisement" ad.id %}?activate=1&next=profile">Опубликовать снова</a></p>
-            <p><a href="{% url "rentitapp:advertisement" ad.id %}?delete=1">Удалить объявление</a></p>
+            <p><a href="{% url "rentitapp:process" ad.id %}?activate=1&next=profile">Опубликовать снова</a></p>
+            <p><a href="{% url "rentitapp:process" ad.id %}?delete=1">Удалить объявление</a></p>
         </div>
         {% endfor %}
     {% endif %}
