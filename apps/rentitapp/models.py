@@ -7,7 +7,24 @@ from utils.random_filename import RandomFileName
 
 
 class Advertisement(UUIDModel):
+    """Stores an advertisement
+
+    Attributes:
+        category: Specifies accommodation type
+        name: Advertisement title
+        description: Accommodation description
+        author: Related User model
+        date_published: Date and time the ad published
+        price: Accommodation price
+        address: Accommodation full address
+        active: Defines if advertisement is public
+        picture: Accommodation photo
+
+    """
+
     class FlatCategory(models.TextChoices):
+        """Enumerated string choices."""
+
         _ = "", "Accommodation type"  # placeholder
         ROOM = "ROOM", "Room"
         FLAT = "FLAT", "Flat"
@@ -46,14 +63,24 @@ class Advertisement(UUIDModel):
 
 
 class Comment(models.Model):
-    # comment author
+    """Stores a comment
+
+    Attributes:
+        author: Comment`s author (User model)
+        profile: Author of the commented advertisement (User model)
+        advertisement: Commented advertisement
+        text: Text of the comment
+        date_published: Date and time the comment published
+
+    """
+
     author = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
         related_name="comment_author",
         db_index=True,
     )
-    # advertisement author
+
     profile = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,

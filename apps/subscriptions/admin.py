@@ -5,6 +5,8 @@ from .models import PremiumSubscription
 
 
 class CustomModel(ModelAdmin):
+    """Customizes list view for PremiumSubscription model"""
+
     list_display = (
         "__str__",
         "start_date",

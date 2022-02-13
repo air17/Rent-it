@@ -4,6 +4,8 @@ from .models import Advertisement, Comment
 
 
 class AdAdmin(admin.ModelAdmin):
+    """Customizes list view and adds search and filters for advertisements"""
+
     list_display = (
         "name",
         "category",

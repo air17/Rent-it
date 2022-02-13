@@ -11,11 +11,13 @@ from .services import process_comment
 
 
 def advertisement_list(request):
+    """Displays paginated list of public advertisements."""
+
     ads_list = models.Advertisement.objects.all()
 
     context = {}
 
-    # sorting
+    # Sorting ads
     sort_by = request.GET.get("sort")
     if sort_by in ("name", "date_published", "price"):
         ads_list = ads_list.order_by(sort_by)
@@ -24,33 +26,34 @@ def advertisement_list(request):
             ads_list = ads_list.reverse()
             context["sort"] += "_d"
 
-    # adding available accommodation categories to context
+    # Adding available accommodation categories to context
     context["categories"] = [*models.Advertisement.FlatCategory]
 
-    # filtering categories
+    # Filtering categories
     category_selected: str = request.GET.get("category")
     if category_selected in models.Advertisement.FlatCategory.values[1:]:
         context["category_selected"] = category_selected
         ads_list = ads_list.filter(category=category_selected)
 
-    # removing deactivated ads
+    # Removing deactivated ads
     ads_list = ads_list.filter(active=True)
 
-    # removing new ads for non-premium
+    # Removing new ads for non-premium
     if request.user.is_anonymous or not request.user.is_premium:
         ads_list = ads_list.filter(date_published__lte=timezone.now() - timedelta(days=days_till_free))
 
     paginator = Paginator(ads_list, 9)  # Show 9 ads per page.
     page_number = request.GET.get("page")
 
-    # adding paginated ads to context
+    # Adding paginated ads to the context
     context["advertisement_list"] = paginator.get_page(page_number)
 
     return render(request, "rentitapp/advertisement_list.html", context)
 
 
-# advertisement details page
 def advertisement_detail(request, pk=None):
+    """Displays an advertisement and comment form."""
+
     ad = get_object_or_404(models.Advertisement, pk=pk)
 
     # Redirect if ad is new and user is not premium
@@ -77,6 +80,7 @@ def advertisement_detail(request, pk=None):
         if request.GET.get("edited"):
             context["status_text"] = "Объявление отредактировано"
 
+    # TODO: Make additional views for the code below
     # Processing adding comment
     elif request.GET.get("comment") and request.user.is_authenticated and request.user != ad.author:
         form = forms.NewComment(request.GET)
@@ -104,9 +108,10 @@ def advertisement_detail(request, pk=None):
     return render(request, "rentitapp/advertisement_detail.html", context=context)
 
 
-# edit ad page
 @login_required
 def advertisement_edit(request, pk=None):
+    """Displays advertisement editing form and processes it."""
+
     ad = get_object_or_404(models.Advertisement, pk=pk)
     if ad.author != request.user:
         return HttpResponseRedirect("/")
@@ -123,9 +128,10 @@ def advertisement_edit(request, pk=None):
     return render(request, "rentitapp/advertisement_edit.html", context)
 
 
-# create ad page
 @login_required(login_url="/profile/login")
 def advertisement_create(request):
+    """Displays advertisement creation form and processes it."""
+
     if request.method == "POST":
         form = forms.EditAdvertisement(request.POST, request.FILES)
         if form.is_valid():

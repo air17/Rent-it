@@ -5,6 +5,8 @@ from .models import User, Membership
 
 
 class CustomUserAdmin(UserAdmin):
+    """Customizes User views and adds ordering, search and filters"""
+
     fieldsets = (
         (
             None,
@@ -74,6 +76,8 @@ class CustomUserAdmin(UserAdmin):
 
 
 class CustomModel(ModelAdmin):
+    """Customizes list view of memberships in admin panel"""
+
     list_display = (
         "user",
         "plan",

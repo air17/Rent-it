@@ -6,5 +6,7 @@ from . import constants
 
 @login_required
 def premium_view(request):
+    """Displays premium subscription status"""
+
     context = {"price": constants.PREMIUM_SUBSCRIPTION_PRICE}
     return render(request, "subscriptions/status_page.html", context)

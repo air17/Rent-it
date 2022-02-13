@@ -4,6 +4,8 @@ from .models import YookassaPayment
 
 
 class CustomModel(ModelAdmin):
+    """Customizes list view for YookassaPayment model"""
+
     list_display = (
         "id",
         "user",
