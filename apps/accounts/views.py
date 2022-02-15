@@ -2,7 +2,7 @@ from datetime import timedelta
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
 from apps.rentitapp import models, forms
@@ -11,7 +11,8 @@ from apps.rentitapp import models, forms
 @login_required
 def profile_view(request, pk):
     """Displays a user profile, their comments and active ads."""
-    user = get_user_model().objects.get(pk=pk)
+
+    user = get_object_or_404(get_user_model(), pk=pk)
 
     context = {"user": user}
 
