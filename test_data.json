@@ -1,0 +1,141 @@
+[
+  {
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+      "password": "bcrypt_sha256$$2b$12$gRqC.T/md1j8LVt3AnM/5.h/IbCNlh8qwohA5prUtff.uH5Zvi62a",
+      "last_login": "2022-02-07T20:02:33.551Z",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2022-02-06T15:42:22Z",
+      "first_name": "Admin",
+      "last_name": "Adminchenko",
+      "email": "admin@localhost",
+      "picture": "",
+      "phone": "+79000000000",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+      "password": "bcrypt_sha256$$2b$12$eQ48pGEmJVXHAKqhSMCHseYe.2qo4FKK64uxOrkk67Aj7EM.VdeUa",
+      "last_login": "2022-02-07T21:23:46.646Z",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2022-02-07T19:47:16.489Z",
+      "first_name": "User",
+      "last_name": "Userenko",
+      "email": "user@localhost",
+      "picture": "",
+      "phone": "+79999999999",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.membership",
+    "pk": 1,
+    "fields": {"user": 1, "plan": 1}
+  },
+  {
+    "model": "accounts.membership",
+    "pk": 2,
+    "fields": {"user": 2, "plan": 0}
+  },
+  {
+    "model": "rentitapp.advertisement",
+    "pk": "76a8112d-4270-430a-a725-40b99799d31e",
+    "fields": {
+      "category": "ROOM",
+      "name": "Ipsum lorum",
+      "description": "Suspendisse gravida nisl felis, nec posuere arcu posuere nec. Mauris iaculis, mi non gravida mollis, felis enim lacinia ligula, eget tincidunt nisl lectus a leo. Sed vitae est iaculis, efficitur dui at, venenatis lectus. Phasellus blandit mi est, semper placerat ex venenatis sed. Quisque odio mi, tempor eget mauris vel, egestas molestie ante. Proin ac augue augue. Aenean ac enim ex. Duis id ligula in mauris porta ornare. Praesent ac ligula urna. Etiam aliquet volutpat tortor sed tincidunt. Sed ac odio id eros condimentum ultrices. Donec eu odio at erat molestie dictum sed sit amet sem. Nam vel vestibulum neque, nec suscipit est. Proin fringilla placerat purus vitae auctor.",
+      "author": 2,
+      "date_published": "2022-02-07T20:01:24.668Z",
+      "price": 9500,
+      "address": "Mauris iaculis, 152",
+      "active": true,
+      "picture": "advertisements/a159d711-ab4d-44f5-b815-779ac3e389c5.png"
+    }
+  },
+  {
+    "model": "rentitapp.advertisement",
+    "pk": "c03300d8-0e9b-474c-a6db-25700cc8c86c",
+    "fields": {
+      "category": "FLAT",
+      "name": "Lorem ipsum",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula erat nunc, condimentum condimentum ipsum blandit in. Sed lorem urna, varius ut euismod a, consectetur nec est. Quisque orci lorem, pellentesque quis maximus vitae, elementum ut nulla. Phasellus et urna ac neque mattis hendrerit tempor id sapien. Fusce sed enim ut purus ornare sollicitudin. Vivamus eleifend, augue id convallis faucibus, felis tortor posuere nisl, nec mollis sapien nulla quis diam. In hac habitasse platea dictumst. Etiam pulvinar dolor nulla, dignissim tincidunt nibh pellentesque eu. Morbi vitae dolor vitae libero tempus pretium ac et orci. Duis sodales vehicula rhoncus. Donec convallis orci sem, ut egestas turpis congue quis. Sed dictum orci sed pellentesque sagittis. Quisque rhoncus felis non leo facilisis gravida. Fusce egestas condimentum varius. Aenean a erat sed metus tempus consectetur. Cras ipsum massa, consequat eget dapibus quis, tincidunt at eros.",
+      "author": 1,
+      "date_published": "2022-02-07T13:00:59.605Z",
+      "price": 20000,
+      "address": "Condimentum, Nam vehicula, 15",
+      "active": true,
+      "picture": "advertisements/5716b5ed-5963-4f09-bd02-94b6d6fe21e5.png"}
+  },
+  {
+    "model": "rentitapp.comment",
+    "pk": 2,
+    "fields": {
+      "author": 1,
+      "profile": 2,
+      "advertisement": "76a8112d-4270-430a-a725-40b99799d31e",
+      "text": "Very nice room",
+      "date_published": "2022-02-07T20:09:28.133Z"}
+  },
+  {
+    "model": "rentitapp.comment",
+    "pk": 5,
+    "fields": {
+      "author": 2,
+      "profile": 1,
+      "advertisement": "c03300d8-0e9b-474c-a6db-25700cc8c86c",
+      "text": "I like that",
+      "date_published": "2022-02-13T20:01:46.215Z"}
+  },
+  {
+    "model": "payments.yookassapayment",
+    "pk": "29926291-000f-5000-9000-1919d7753f59",
+    "fields": {
+      "status": "succeeded",
+      "amount": "250.00",
+      "user": 1,
+      "created_at": "2022-02-06T22:42:25.076Z",
+      "expires_at": null,
+      "payment_method": "YooMoney wallet 410011758831136",
+      "processed": true}
+  },
+  {
+    "model": "payments.yookassapayment",
+    "pk": "2993a3ee-000f-5000-8000-16ed9a3d1951",
+    "fields": {
+      "status": "succeeded",
+      "amount": "250.00",
+      "user": 2,
+      "created_at": "2022-02-07T21:33:34.571Z",
+      "expires_at": null,
+      "payment_method": "Bank card *4444",
+      "processed": true}
+  },
+  {
+    "model": "subscriptions.premiumsubscription",
+    "pk": 1,
+    "fields": {
+      "membership": 1,
+      "start_date": "2022-02-06T22:42:35.958Z",
+      "expiration_date": "2022-03-08T22:42:35.958Z",
+      "last_payment": "29926291-000f-5000-9000-1919d7753f59"}
+  },
+  {
+    "model": "subscriptions.premiumsubscription",
+    "pk": 2,
+    "fields": {
+      "membership": 2,
+      "start_date": "2022-02-07T21:33:54.353Z",
+      "expiration_date": "2022-03-09T21:33:54.353Z",
+      "last_payment": "2993a3ee-000f-5000-8000-16ed9a3d1951"}
+  }
+]
