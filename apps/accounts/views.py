@@ -5,7 +5,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
-from apps.rentitapp import models, forms
+from .forms import RegistrationForm
+from apps.rentitapp import models
 
 
 @login_required
@@ -58,11 +59,11 @@ def registration_view(request):
     if not request.user.is_anonymous:
         return HttpResponseRedirect("/")
     if request.method == "POST":
-        form = forms.RegistrationForm(request.POST, request.FILES)
+        form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             new_user = form.save()
             login(request, user=new_user)
             return redirect("accounts:account")
     else:
-        form = forms.RegistrationForm()
+        form = RegistrationForm()
     return render(request, "registration/registration.html", context={"form": form})
