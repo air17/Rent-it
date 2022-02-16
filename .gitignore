@@ -8,3 +8,4 @@ node_modules
 .env
 credentials.json
 /.pytest_cache/
+.coverage

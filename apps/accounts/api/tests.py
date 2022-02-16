@@ -71,6 +71,8 @@ class TestUserUpdate(
     pytest_drf.ForbidsAnonymousUsers,
     pytest_drf.AsUser("user"),
     pytest_drf.Returns200,
+    pytest_drf.AsUser("admin"),
+    pytest_drf.Returns403,
 ):
     @pytest.fixture
     def url(self):
@@ -83,6 +85,8 @@ class TestUserDestroy(
     pytest_drf.APIViewTest,
     pytest_drf.UsesDeleteMethod,
     pytest_drf.ForbidsAnonymousUsers,
+    pytest_drf.AsUser("user"),
+    pytest_drf.Returns403,
     pytest_drf.AsUser("admin"),
     pytest_drf.Returns204,
 ):
