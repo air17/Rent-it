@@ -4,7 +4,7 @@ from pytest_django.asserts import assertContains
 from django.http import Http404
 
 from rentit.settings.components.common import STATIC_URL
-from .views import profile_view, account_view, registration_view
+from apps.accounts.views import profile_view, account_view, registration_view
 
 
 @pytest.mark.django_db
