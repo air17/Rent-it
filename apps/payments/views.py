@@ -11,7 +11,12 @@ from rentit.settings.components import config
 
 from ..subscriptions.constants import PREMIUM_SUBSCRIPTION_PRICE
 from .constants import YOOKASSA_SUCCEEDED
-from .services import allow_new_payment, create_payment, extend_premium_membership, process_payment
+from .services import (
+    allow_new_payment,
+    create_payment,
+    extend_premium_membership,
+    process_payment,
+)
 
 logger = logging.getLogger(__name__)
 

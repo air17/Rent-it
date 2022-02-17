@@ -20,3 +20,6 @@ DJANGO_SETTINGS_MODULE = "rentit.settings"
 django_debug_mode = true
 python_files = ["test*.py"]
 log_cli = 1
+
+[tool.isort]
+profile = "black"
