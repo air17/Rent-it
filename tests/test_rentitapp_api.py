@@ -29,7 +29,7 @@ admin = pytest.fixture((lambda admin_user: admin_user))
 ads_url = "/api/v1/ads/"
 
 
-class TestAdvertisementViewSet(ViewSetTest):
+class TestAdvertisementViewSet(ViewSetTest):  # noqa skipcq
     @pytest.fixture
     def list_url(self):
         return ads_url
