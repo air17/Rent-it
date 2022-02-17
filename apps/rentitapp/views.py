@@ -167,4 +167,4 @@ def comment_processing(request, pk):
         if process_comment(form, request.user, ad):
             return redirect(reverse("rentitapp:advertisement", args=(pk,)) + "?comment_added=1")
 
-    return redirect(reverse("rentitapp:advertisement", args=(pk,)))
+    return redirect(reverse("rentitapp:advertisement", args=(pk,)) + "?comment_added=error")

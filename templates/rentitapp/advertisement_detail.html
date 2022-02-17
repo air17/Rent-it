@@ -38,7 +38,11 @@
     {% endif %}
 
     {% if comment_added %}
-        <div class="bg-success" style="color: white;">Комментарий опубликован</div>
+        {% if comment_added == "error" %}
+            <div class="bg-danger text-white">Невозможно опубликовать комментарий</div>
+        {% else %}
+            <div class="bg-success text-white">Комментарий опубликован</div>
+        {% endif %}
     {% endif %}
 
     {% if user != advertisement.author and user.is_authenticated and not comment_added %}

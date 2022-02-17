@@ -1,8 +1,4 @@
-from io import BytesIO
-
 import pytest
-from PIL import Image
-from django.core.files.uploadedfile import SimpleUploadedFile
 from pytest_drf import (
     ViewSetTest,
     UsesGetMethod,
@@ -21,6 +17,7 @@ from pytest_drf import (
 from pytest_lambda import static_fixture
 
 from apps.rentitapp.models import Advertisement
+from utils.get_temporary_image import get_temporary_image
 
 # Get access to db
 pytestmark = pytest.mark.django_db
@@ -87,13 +84,6 @@ class TestAdvertisementViewSet(ViewSetTest):
         AsUser("user"),
         Returns201,
     ):
-        @staticmethod
-        def get_temporary_image():
-            file = BytesIO()
-            img = Image.new("RGB", (100, 100))
-            img.save(file, "jpeg")
-            return SimpleUploadedFile("test.jpg", file.getvalue())
-
         new_ad = {
             "category": Advertisement.FlatCategory.FLAT,
             "name": "Flat name",
