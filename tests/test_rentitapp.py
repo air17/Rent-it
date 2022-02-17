@@ -19,7 +19,14 @@ test_ad_uuid = "76a8112d-4270-430a-a725-40b99799d31e"
 
 
 def test_advertisement_list_view(rf, db):
-    request = rf.get("", data={"category": Advertisement.FlatCategory.ROOM})
+    request = rf.get(
+        "",
+        data={
+            "category": Advertisement.FlatCategory.ROOM,
+            "sort": "name",
+            "desc": True,
+        },
+    )
     request.user = AnonymousUser
     response = advertisement_list(request)
     assert response.status_code == 200
@@ -113,9 +120,10 @@ def test_advertisement_process_view(rf, django_user_model, admin_user):
     test_ad.refresh_from_db()
     assert test_ad.active is False
 
-    request_activate = rf.get("", data={"activate": 1})
+    request_activate = rf.get("", data={"activate": 1, "next": "profile"})
     request_activate.user = django_user_model.objects.get(id=2)
-    advertisement_process(request_activate, test_ad_uuid)
+    response = advertisement_process(request_activate, test_ad_uuid)
+    assert response.url.endswith("profile/")
     test_ad.refresh_from_db()
     assert test_ad.active is True
 
@@ -127,7 +135,7 @@ def test_advertisement_process_view(rf, django_user_model, admin_user):
         test_ad.refresh_from_db()
 
 
-def test_comment_process_view(rf, django_user_model, admin_user):
+def test_comment_processing_view(rf, django_user_model, admin_user):
     request = rf.get("", data={"comment": "blah-blah"})
     request.user = admin_user
     response = comment_processing(request, test_ad_uuid)
