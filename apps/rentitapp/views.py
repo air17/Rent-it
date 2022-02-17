@@ -106,7 +106,7 @@ def advertisement_edit(request, pk=None):
     return render(request, "rentitapp/advertisement_edit.html", context)
 
 
-@login_required(login_url="/profile/login")
+@login_required
 def advertisement_create(request):
     """Displays advertisement creation form and processes it."""
 
@@ -125,6 +125,7 @@ def advertisement_create(request):
     return render(request, "rentitapp/advertisement_edit.html", context)
 
 
+@login_required
 def advertisement_process(request, pk):
     """Processes advertisement deactivation, reactivation and deletion."""
 
@@ -155,13 +156,15 @@ def advertisement_process(request, pk):
     return redirect("rentitapp:advertisement", pk=pk)
 
 
+@login_required
 def comment_processing(request, pk):
     """Processing adding comment"""
 
     ad = get_object_or_404(models.Advertisement, pk=pk)
 
-    if request.user.is_authenticated and request.user != ad.author:
+    if request.user != ad.author:
         form = forms.NewComment(request.GET)
-        process_comment(form, request.user, ad)
+        if process_comment(form, request.user, ad):
+            return redirect(reverse("rentitapp:advertisement", args=(pk,)) + "?comment_added=1")
 
-    return redirect(reverse("rentitapp:advertisement", args=(pk,)) + "?comment_added=1")
+    return redirect(reverse("rentitapp:advertisement", args=(pk,)))
