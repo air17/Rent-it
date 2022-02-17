@@ -71,7 +71,6 @@ def advertisement_detail(request, pk):
         "advertisement": ad,
         "category": ad.FlatCategory(ad.category).label,
         "just_added": False,
-        "comment_added": False,
         "new_comment": forms.NewComment(),
     }
 
@@ -81,8 +80,7 @@ def advertisement_detail(request, pk):
         context["status_text"] = "Объявление успешно размещено!"
         if request.GET.get("edited"):
             context["status_text"] = "Объявление отредактировано"
-    elif request.GET.get("comment_added"):
-        context["comment_added"] = True
+    context["comment_added"] = request.GET.get("comment_added")
 
     return render(request, "rentitapp/advertisement_detail.html", context=context)
 

@@ -3,7 +3,7 @@ import logging
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from yookassa.domain.notification import WebhookNotification
 
@@ -48,6 +48,8 @@ def payment_view(request):
         )
 
         return HttpResponseRedirect(payment.confirmation.confirmation_url)
+    else:
+        return redirect("payments:processing")
 
 
 def payment_processing_view(request):
