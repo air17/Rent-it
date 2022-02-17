@@ -2,7 +2,7 @@ from django.db import IntegrityError
 
 from apps.accounts.models import User
 from apps.rentitapp.forms import NewComment
-from apps.rentitapp.models import Comment, Advertisement
+from apps.rentitapp.models import Advertisement, Comment
 
 
 def process_comment(form: NewComment, user: User, ad: Advertisement):

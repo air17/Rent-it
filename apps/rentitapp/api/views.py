@@ -1,10 +1,12 @@
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
+
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
+from apps.rentitapp.models import Advertisement
+
 from .permissions import IsAuthor
 from .serializers import AdvertisementSerializer, ThinAdvertisementSerializer
-from apps.rentitapp.models import Advertisement
 
 
 class AdvertisementViewSet(ModelViewSet):

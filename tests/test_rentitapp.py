@@ -6,10 +6,10 @@ from pytest_django.asserts import assertContains
 
 from apps.rentitapp.models import Advertisement
 from apps.rentitapp.views import (
-    advertisement_list,
+    advertisement_create,
     advertisement_detail,
     advertisement_edit,
-    advertisement_create,
+    advertisement_list,
     advertisement_process,
     comment_processing,
 )

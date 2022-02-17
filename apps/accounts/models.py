@@ -1,8 +1,8 @@
 import logging
 
-from django.db import models
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser, UserManager
+from django.db import models
 
 from rentit.settings.components.common import STATIC_URL
 from utils.random_filename import RandomFileName

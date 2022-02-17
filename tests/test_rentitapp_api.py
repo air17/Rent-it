@@ -1,18 +1,18 @@
 import pytest
 from pytest_drf import (
-    ViewSetTest,
-    UsesGetMethod,
-    UsesListEndpoint,
-    ForbidsAnonymousUsers,
     AsUser,
+    ForbidsAnonymousUsers,
     Returns200,
-    Returns403,
-    UsesDetailEndpoint,
-    UsesPatchMethod,
-    UsesDeleteMethod,
     Returns201,
     Returns204,
+    Returns403,
+    UsesDeleteMethod,
+    UsesDetailEndpoint,
+    UsesGetMethod,
+    UsesListEndpoint,
+    UsesPatchMethod,
     UsesPostMethod,
+    ViewSetTest,
 )
 from pytest_lambda import static_fixture
 

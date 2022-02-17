@@ -8,11 +8,7 @@ import logging
 from typing import List
 
 from rentit.settings.components import config
-from rentit.settings.components.common import (
-    DATABASES,
-    INSTALLED_APPS,
-    MIDDLEWARE,
-)
+from rentit.settings.components.common import DATABASES, INSTALLED_APPS, MIDDLEWARE
 
 # Setting the development status:
 

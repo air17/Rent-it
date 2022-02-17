@@ -6,7 +6,7 @@ A house rent advertisement board.
 
 0. Install `python3`
 1. Install dependencies: `pip install -r requirements.txt`
-2. Run `pre-commit install`
+2. Run `pre-commit install` and `pre-commit install --hook-type pre-push`
 3. Rename `.env.template` to `.env` in `config` directory and fill it
 4. Run `python manage.py makemigrations rentitapp accounts payments subscriptions`
 5. Run `python manage.py migrate`

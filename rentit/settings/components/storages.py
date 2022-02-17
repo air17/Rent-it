@@ -1,5 +1,7 @@
 import os.path
+
 from google.oauth2 import service_account
+
 from rentit.settings.components import BASE_DIR, config
 
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"

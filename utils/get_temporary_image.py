@@ -1,6 +1,7 @@
 from io import BytesIO
-from PIL import Image
+
 from django.core.files.uploadedfile import SimpleUploadedFile
+from PIL import Image
 
 
 def get_temporary_image(ext="jpeg"):

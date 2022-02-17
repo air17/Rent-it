@@ -8,9 +8,10 @@ from django.views.decorators.csrf import csrf_exempt
 from yookassa.domain.notification import WebhookNotification
 
 from rentit.settings.components import config
-from .constants import YOOKASSA_SUCCEEDED
-from .services import process_payment, allow_new_payment, create_payment, extend_premium_membership
+
 from ..subscriptions.constants import PREMIUM_SUBSCRIPTION_PRICE
+from .constants import YOOKASSA_SUCCEEDED
+from .services import allow_new_payment, create_payment, extend_premium_membership, process_payment
 
 logger = logging.getLogger(__name__)
 

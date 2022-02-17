@@ -1,5 +1,5 @@
 from rest_framework.fields import SerializerMethodField
-from rest_framework.serializers import ModelSerializer, HyperlinkedRelatedField
+from rest_framework.serializers import HyperlinkedRelatedField, ModelSerializer
 
 from apps.rentitapp.models import Advertisement, Comment
 

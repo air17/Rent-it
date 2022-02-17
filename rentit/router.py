@@ -1,4 +1,5 @@
 from rest_framework.routers import DefaultRouter
+
 from apps.accounts.api.views import UserViewSet
 from apps.rentitapp.api.views import AdvertisementViewSet
 

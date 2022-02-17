@@ -1,10 +1,10 @@
 import pytest
 from django.contrib.auth.models import AnonymousUser
-from pytest_django.asserts import assertContains
 from django.http import Http404
+from pytest_django.asserts import assertContains
 
+from apps.accounts.views import account_view, profile_view, registration_view
 from rentit.settings.components.common import STATIC_URL
-from apps.accounts.views import profile_view, account_view, registration_view
 
 
 @pytest.mark.django_db
