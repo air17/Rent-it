@@ -48,23 +48,23 @@ INSTALLED_APPS: Tuple[str, ...] = (
     "health_check.storage",
 )
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-        },
-        "django.request": {
-            "handlers": ["console"],
-        },
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#         },
+#         "django.request": {
+#             "handlers": ["console"],
+#         },
+#     },
+# }
 
 # Logs email
 ADMINS = [("Admin", config("ADMIN_EMAIL", default="admin@localhost"))]
