@@ -48,6 +48,20 @@ INSTALLED_APPS: Tuple[str, ...] = (
     "health_check.storage",
 )
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+}
+
 MIDDLEWARE: Tuple[str, ...] = (
     # Django:
     "django.middleware.security.SecurityMiddleware",

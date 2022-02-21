@@ -40,12 +40,6 @@ STATICFILES_STORAGE = (
 )
 
 
-# Media files
-# https://docs.djangoproject.com/en/4.0/topics/files/
-
-# MEDIA_ROOT = "media"
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
