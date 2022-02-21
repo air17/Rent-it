@@ -31,7 +31,7 @@ _COLLECTSTATIC_DRYRUN = config(
     default=False,
 )
 # Adding STATIC_ROOT to collect static files via 'collectstatic':
-STATIC_ROOT = ".static" if _COLLECTSTATIC_DRYRUN else "/var/www/django/static"
+STATIC_ROOT = ".static" if _COLLECTSTATIC_DRYRUN else "static"
 
 STATICFILES_STORAGE = (
     # This is a string, not a tuple,
@@ -43,7 +43,7 @@ STATICFILES_STORAGE = (
 # Media files
 # https://docs.djangoproject.com/en/4.0/topics/files/
 
-MEDIA_ROOT = "media"
+# MEDIA_ROOT = "media"
 
 
 # Password validation
@@ -79,7 +79,6 @@ CSRF_COOKIE_SECURE = True
 if config("IS_HEROKU", cast=bool, default=False) is True:
     import django_heroku
     import dj_database_url
-    from ..components.common import DATABASES
 
-    DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)  # noqa
     django_heroku.settings(locals())
