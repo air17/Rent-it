@@ -199,3 +199,11 @@ REFERRER_POLICY = "same-origin"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+# Heroku specific settings
+if config("IS_HEROKU", cast=bool, default=False) is True:
+    import django_heroku
+    import dj_database_url
+
+    DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)  # noqa
+    django_heroku.settings(locals())
