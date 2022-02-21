@@ -2,6 +2,8 @@
 
 A house rent advertisement board.
 
+Live demo - https://rent-it-ru.herokuapp.com
+
 ## Install
 
 0. Install `python3`
