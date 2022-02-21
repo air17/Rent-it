@@ -13,7 +13,6 @@ from rentit.settings.components import config
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    # TODO: check production hosts
     config("DOMAIN_NAME"),
     # We need this value for `healthcheck` to work:
     "localhost",
@@ -33,11 +32,7 @@ _COLLECTSTATIC_DRYRUN = config(
 # Adding STATIC_ROOT to collect static files via 'collectstatic':
 STATIC_ROOT = ".static" if _COLLECTSTATIC_DRYRUN else "static"
 
-STATICFILES_STORAGE = (
-    # This is a string, not a tuple,
-    # but it does not fit into 80 characters rule.
-    "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-)
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Password validation
@@ -60,7 +55,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 SECURE_REDIRECT_EXEMPT = [
     # This is required for healthcheck to work:
     "^health/",
