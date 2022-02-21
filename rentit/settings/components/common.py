@@ -66,6 +66,9 @@ LOGGING = {
     },
 }
 
+# Logs email
+ADMINS = [("Admin", config("ADMIN_EMAIL", default="admin@localhost"))]
+
 MIDDLEWARE: Tuple[str, ...] = (
     # Django:
     "django.middleware.security.SecurityMiddleware",
