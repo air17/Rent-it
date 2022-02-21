@@ -12,7 +12,7 @@ django-split-settings==1.1
 django-querycount==0.7
 django-debug-toolbar==3.2.4
 nplusone==1
-django_migration_linter==3.0.1
+django_migration_linter==4.0.0
 django_test_migrations==1.2
 django-extra-checks==0.11
 bcrypt==3.2
@@ -29,3 +29,7 @@ google-cloud-storage==2.1
 django-cleanup==6
 pytest-django==4.5.2
 pytest-drf==1.1.2
+gunicorn==20.1.0
+django_heroku==0.3.1
+dj-database-url==0.5.0
+whitenoise==6

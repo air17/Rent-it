@@ -74,3 +74,12 @@ SECURE_REDIRECT_EXEMPT = [
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+# Heroku specific settings
+if config("IS_HEROKU", cast=bool, default=False) is True:
+    import django_heroku
+    import dj_database_url
+    from ..components.common import DATABASES
+
+    DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    django_heroku.settings(locals())
