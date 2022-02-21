@@ -62,6 +62,8 @@ MIDDLEWARE: Tuple[str, ...] = (
     "axes.middleware.AxesMiddleware",
     # Django HTTP Referrer Policy:
     "django_http_referrer_policy.middleware.ReferrerPolicyMiddleware",
+    # WhiteNoise:
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 )
 
 ROOT_URLCONF = "rentit.urls"
@@ -75,11 +77,11 @@ WSGI_APPLICATION = "rentit.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("POSTGRES_DB"),
-        "USER": config("POSTGRES_USER"),
-        "PASSWORD": config("POSTGRES_PASSWORD"),
-        "HOST": config("DJANGO_DATABASE_HOST"),
-        "PORT": config("DJANGO_DATABASE_PORT", cast=int),
+        "NAME": config("POSTGRES_DB", default="POSTGRES_DB"),
+        "USER": config("POSTGRES_USER", default="POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD", default="POSTGRES_PASSWORD"),
+        "HOST": config("DJANGO_DATABASE_HOST", default="localhost"),
+        "PORT": config("DJANGO_DATABASE_PORT", cast=int, default=5432),
         "CONN_MAX_AGE": config("CONN_MAX_AGE", cast=int, default=60),
         "OPTIONS": {
             "connect_timeout": 10,
