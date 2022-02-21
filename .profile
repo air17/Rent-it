@@ -1,2 +1,2 @@
 echo ${GOOGLE_CREDENTIALS_JSON} > gcp-credentials.json
-./manage.py collectstatic
+./manage.py collectstatic --noinput
