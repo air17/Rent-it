@@ -60,6 +60,9 @@ LOGGING = {
         "django": {
             "handlers": ["console"],
         },
+        "django.request": {
+            "handlers": ["console"],
+        },
     },
 }
 
