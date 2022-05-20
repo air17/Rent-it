@@ -4,7 +4,8 @@ from google.oauth2 import service_account
 
 from rentit.settings.components import BASE_DIR, config
 
-DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+# DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 # Google storage
 GS_BUCKET_NAME = config("GS_BUCKET_NAME")
