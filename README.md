@@ -18,9 +18,5 @@ To use payments:
 2. Put your ngrok forwarding domain to `DOMAIN_NAME` field in `.env`.
 3. Make a test account on [Yookassa](https://yookassa.ru/developers) and fill `.env` fields with your credentials.
 
-###Tests
+### Tests
 Run `pytest`
-
-## Author
-
-[Bulent Ozcan](https://github.com/air17)
